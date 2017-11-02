@@ -1,41 +1,43 @@
 #include "timer.h"
 
+/*Timer setup for Heartbeat*/
+struct timespec heartbeat_setup(uint32_t second_value, uint32_t nanosec_value)
+{
+  struct timespec ts;
+  struct timeval tp;
+
+  gettimeofday(&tp,NULL);
+  ts.tv_sec = tp.tv_sec;
+  ts.tv_nsec = tp.tv_usec * 1000;
+  ts.tv_sec += second_value;
+  ts.tv_nsec += nanosec_value;
+  
+  return ts;
+
+}
 /*handler for timer*/
 void timer_handler(int signum)
 {
-  main_count++;
-  count++;
-  printf("\ntimer expired %d times\n",count);
-  if(count == 48)
+  static sig_atomic_t timer_temp_count = 0;
+  static sig_atomic_t timer_light_count = 0;
+  timer_temp_count++;
+  timer_light_count++;
+  
+  if(timer_temp_count == temp_task_period)
   {
-    exit(1);
-  }
-  if(exit_flag == 1)
-  {
-    pthread_cond_broadcast(&thread1_cond);
-    pthread_cond_broadcast(&thread2_cond);
-    pthread_cond_broadcast(&thread3_cond);
-    pthread_cond_broadcast(&thread4_cond);
+    pthread_cond_broadcast(&temp_task_cond);
+    timer_temp_count = 0;
   }
 
-  if(count == 1)
+  if(timer_light_count == light_task_period)
   {
-    pthread_cond_broadcast(&thread1_cond);
-  }
-  else if(count == 2)
-  {
-    pthread_cond_broadcast(&thread2_cond);
-  }
-  else if(count == 3)
-  {
-    pthread_cond_broadcast(&thread3_cond);
-    pthread_cond_broadcast(&thread4_cond);
-    count  = 0;
+    pthread_cond_broadcast(&light_task_cond);
+    timer_light_count = 0;
   }
 }
 
-
- struct itimerval  setup_timer(uint32_t sec_value, uint32_t usec_value)
+/*function to setup timer*/
+struct itimerval  setup_timer(uint32_t sec_value, uint32_t usec_value)
 {
   struct itimerval timer;
   struct sigaction sa; 
@@ -60,17 +62,4 @@ void timer_handler(int signum)
 }
 
 
- struct timespec heartbeat_setup(uint32_t second_value, uint32_t nanosec_value)
-{
-  struct timespec ts;
-  struct timeval tp;
 
-  gettimeofday(&tp,NULL);
-  ts.tv_sec = tp.tv_sec;
-  ts.tv_nsec = tp.tv_usec * 1000;
-  ts.tv_sec += second_value;
-  ts.tv_nsec += nanosec_value;
-  
-  return ts;
-
-}
