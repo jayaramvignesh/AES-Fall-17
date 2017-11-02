@@ -17,29 +17,22 @@
 #include<errno.h>
 #include<sys/time.h>
 
+#define SEC_VALUE 0
+#define USEC_VALUE 100000
 
-/*vatraible used to schedule threads*/
-extern sig_atomic_t count;
-extern sig_atomic_t exit_flag;
-extern sig_atomic_t main_count;
-
- /*final path and file name stored*/
+/*final file name with path to be stored*/
 char final_file[100];
 
-/*mutex and condition variables for three tasks*/
-pthread_mutex_t thread1_mutex;
-pthread_cond_t thread1_cond;
 
-pthread_mutex_t thread2_mutex;
-pthread_cond_t thread2_cond;
+/*mutex for different queues*/
+pthread_mutex_t main_log_queue_mutex;
+pthread_mutex_t temp_log_queue_mutex;
+pthread_mutex_t light_log_queue_mutex;
+pthread_mutex_t decision_queue_mutex;
 
-
-pthread_mutex_t thread3_mutex;
-pthread_cond_t thread3_cond;
-
-pthread_mutex_t thread4_mutex;
-pthread_cond_t thread4_cond;
-
+/*condition variables using which the tasks will collect data periodically*/
+pthread_cond_t temp_task_cond;
+pthread_cond_t light_task_cond;
 
 /*mutex and condition variables for main to monitor three tasks*/
 pthread_mutex_t main_thread1_mutex;
@@ -54,7 +47,17 @@ pthread_cond_t main_thread3_cond;
 pthread_mutex_t main_thread4_mutex;
 pthread_cond_t main_thread4_cond;
 
+/*global variables*/
+extern sig_atomic_t main_log_queue_count;
+extern sig_atomic_t light_log_queue_count;
+extern sig_atomic_t temp_log_queue_count; 
+extern sig_atomic_t decision_queue_count;
+extern sig_atomic_t exit_flag ;
+extern sig_atomic_t main_count;
+
+extern sig_atomic_t temp_task_period ;
+extern sig_atomic_t light_task_period;
+
 
 #endif
-
 
