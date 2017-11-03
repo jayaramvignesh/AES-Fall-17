@@ -1,3 +1,34 @@
+/*************************************************************************
+*   Authors: Arundhath Swami and Vignesh Jayaram
+*   date edited: 2nd Nov 2017
+*
+*   file: main.c
+*
+*   description:
+*
+*   -Main source file for project1
+*   
+*   -In this file, the name of logger file and its path is taken.
+*   
+*   -All the required queues, mutex, condition variables and pthreads 
+*   are created.
+*   
+*   -There is a forever loop which waits to recieve the heartbeat 
+*   from various tasks and sends a asynchronous request to both
+*   the light and temperature tasks
+*   
+*   -On SIGINT or if heartbeat is not received, the while loop breaks
+*   and then waits for all other threads to terminate.
+*
+*   -Once pthread_join is successfull for all tasks. The main destroys
+*   all the mutex, condition variables and closes the queues.
+*
+*   -The main then terminates itself
+*      
+**************************************************************************/
+
+
+
 #include "main.h"
 #include "timer.h"
 #include "message.h"
@@ -7,30 +38,41 @@
 #include "light.h"
 #include "logger.h"
 
-
-/*global variables*/
+/*declared to keep track of the messages on main queue*/
 sig_atomic_t main_log_queue_count = 0;
+
+/*declared to keep track of the messages on light queue*/
 sig_atomic_t light_log_queue_count = 0;
+
+/*declared to keep track of the messages on temperature queue*/
 sig_atomic_t temp_log_queue_count = 0;
+
+/*declared to keep track of the messages on decision queue*/
 sig_atomic_t decision_queue_count = 0;
+
+/*declared for graceful exit on SIGINT*/
 sig_atomic_t exit_flag = 0;
+
+/*declared to send async request from main to both tasks*/
 sig_atomic_t main_count = 0;
 
+/*variables to fire both tasks periodically*/
 sig_atomic_t temp_task_period = 1;
 sig_atomic_t light_task_period = 1;
 
 
-
 int main(int argc, char* argv[])
 {
+ 
   char buffer[MSG_SIZE];
   
-  /*get file name and path to file*/
+  /*set default file name and path to file*/
   char file_name[100] = "log.txt";
   char path_name[100];
   char *path = getenv("PWD");
   strcpy(path_name,path);
 
+  /*get file name and path from user*/
   char c;
   while((c = getopt(argc,argv,"f:p:")) != -1)
   {
@@ -63,6 +105,7 @@ int main(int argc, char* argv[])
   printf("\npath name is %s\n",path_name);
   printf("\nFINAL is %s\n",final_file);
 
+  /*GEt PID of current process*/
   pid_t pi;
   pi = getpid();
   printf("PIDD is %d\n",pi);
@@ -175,14 +218,14 @@ int main(int argc, char* argv[])
 
   setup_SIGINT();
 
-  /*initialize mutex and check for return*/
+  /*initialize mutex for temperature queue and check for return*/
   if(pthread_mutex_init(&temp_log_queue_mutex,NULL)!=0)
   {
       printf("\nERROR: MUTEX INIT FAILED \n");
       return -1;
   }
 
-  /*initialize mutex and check for return*/
+  /*initialize mutex for light queue and check for return*/
   if(pthread_mutex_init(&light_log_queue_mutex,NULL)!=0)
   {
       printf("\nERROR: MUTEX INIT FAILED \n");
@@ -190,7 +233,7 @@ int main(int argc, char* argv[])
   }
 
 
-  /*initialize mutex and check for return*/
+  /*initialize mutex  for decision queue and check for return*/
   if(pthread_mutex_init(&decision_queue_mutex,NULL)!=0)
   {
       printf("\nERROR: MUTEX INIT FAILED \n");
@@ -198,73 +241,83 @@ int main(int argc, char* argv[])
   }
 
  
-  /*initialize condition variable and check for return*/
+  /*initialize condition variable for tempereature task and check for return*/
   if(pthread_cond_init(&light_task_cond,NULL)!=0)
   {
       printf("\nERROR: CONDITION INIT FAILED \n");
       return -1;
   }
 
-  /*initialize condition variable and check for return*/
+  /*initialize condition variable for light task and check for return*/
   if(pthread_cond_init(&temp_task_cond,NULL)!=0)
   {
       printf("\nERROR: CONDITION INIT FAILED \n");
       return -1;
   }
 
-  /*initialize condition variable and check for return*/
+  /*initialize mutex for heartbeat of thread 1  and check for return*/
+  if(pthread_mutex_init(&main_thread1_mutex,NULL)!=0)
+  {
+      printf("\nERROR: MUTEX INIT FAILED \n");
+      return -1;
+  }
+
+
+  /*initialize condition variable for heartbeat of thread 1 and check for return*/
   if(pthread_cond_init(&main_thread1_cond,NULL)!=0)
   {
       printf("\nERROR: CONDITION INIT FAILED \n");
       return -1;
   }
 
-  /*initialize mutex and check for return*/
+  /*initialize mutex  for heartbeat of thread 2 and check for return*/
   if(pthread_mutex_init(&main_thread2_mutex,NULL)!=0)
   {
       printf("\nERROR: MUTEX INIT FAILED \n");
       return -1;
   }
 
-  /*initialize condition variable and check for return*/
+  /*initialize condition variable for heartbeat of thread 2  and check for return*/
   if(pthread_cond_init(&main_thread2_cond,NULL)!=0)
   {
       printf("\nERROR: CONDITION INIT FAILED \n");
       return -1;
   }
 
-  /*initialize mutex and check for return*/
+  /*initialize mutex for heartbeat of thread 3  and check for return*/
   if(pthread_mutex_init(&main_thread3_mutex,NULL)!=0)
   {
       printf("\nERROR: MUTEX INIT FAILED \n");
       return -1;
   }
 
-  /*initialize condition variable and check for return*/
+  /*initialize condition variable for heartbeat of thread 3  and check for return*/
   if(pthread_cond_init(&main_thread3_cond,NULL)!=0)
   {
       printf("\nERROR: CONDITION INIT FAILED \n");
       return -1;
   }
 
-  /*initialize mutex and check for return*/
+  /*initialize mutex for heartbeat of thread 4  and check for return*/
   if(pthread_mutex_init(&main_thread4_mutex,NULL)!=0)
   {
       printf("\nERROR: MUTEX INIT FAILED \n");
       return -1;
   }
 
-  /*initialize condition variable and check for return*/
+  /*initialize condition variable for heartbeat of thread 4  and check for return*/
   if(pthread_cond_init(&main_thread4_cond,NULL)!=0)
   {
       printf("\nERROR: CONDITION INIT FAILED \n");
       return -1;
   }
 
-
+  
   pthread_t temp_thread,light_thread,logger_thread,decision_thread;
   
+  /*create thread for temperature task and check for return*/
   int return_value = pthread_create(&temp_thread,NULL,&temperature_function,NULL);
+  
   if(return_value == -1)
   {
     printf("\nERROR: PTHREAD CREATE FAILED\n");
@@ -272,6 +325,7 @@ int main(int argc, char* argv[])
   }
   else
   {
+    /*if successful creation, log it*/
     time_t a = time(NULL);
     maintask.current_time = ctime(&a);
     maintask.logged_level = INFO;
@@ -280,21 +334,26 @@ int main(int argc, char* argv[])
     strcpy(maintask.message, "-");
     maintask.message_length = strlen(maintask.message); 
    
+    /*lock the main queue mutex*/
     pthread_mutex_lock(&main_log_queue_mutex);
+    
     /*send the message to the queue and check for success*/
     if(mq_send(main_log_mqdes1,(const char *)&maintask, sizeof(maintask),0) == -1)
     {
       printf("\nERROR: mqsend\n");
       exit(1);
     }
-    else if(main_log_queue_count < 10)
+    else if(main_log_queue_count < 10) /*check if messages on queue does not exceed*/
     {
       main_log_queue_count++;
       printf("\nMESSAGE SENT. LOG QUEUE COUNT IS %d\n",main_log_queue_count);
     }
+    
+    /*unlock the main queue mutex*/
     pthread_mutex_unlock(&main_log_queue_mutex);
   }  
 
+  /*create thread for light task and check for return*/
   return_value = pthread_create(&light_thread,NULL,&light_function,NULL);
   if(return_value == -1)
   {
@@ -303,6 +362,7 @@ int main(int argc, char* argv[])
   }
   else
   {
+    /*if successful creation, log it*/
     time_t a = time(NULL);
     maintask.current_time = ctime(&a);
     maintask.logged_level = INFO;
@@ -311,22 +371,27 @@ int main(int argc, char* argv[])
     strcpy(maintask.message, "-");
     maintask.message_length = strlen(maintask.message); 
    
+    /*lock the main queue mutex*/
     pthread_mutex_lock(&main_log_queue_mutex);
+    
     /*send the message to the queue and check for success*/
     if(mq_send(main_log_mqdes1,(const char *)&maintask, sizeof(maintask),0) == -1)
     {
       printf("\nERROR: mqsend\n");
       exit(1);
     }
-    else if(main_log_queue_count < 10)
+    else if(main_log_queue_count < 10) /*check if messages on queue does not exceed*/
     {
       main_log_queue_count++;
       printf("\nMESSAGE SENT. LOG QUEUE COUNT IS %d\n",main_log_queue_count);
     }
+    
+    /*unlock the main queue mutex*/
     pthread_mutex_unlock(&main_log_queue_mutex);
 
    }
 
+  /*create thread for logger task and check for return*/
   return_value = pthread_create(&logger_thread,NULL,&logger_function,NULL);
   if(return_value == -1)
   {
@@ -335,6 +400,7 @@ int main(int argc, char* argv[])
   }
   else
   {
+    /*if successful creation, log it*/
     time_t a = time(NULL);
     maintask.current_time = ctime(&a);
     maintask.logged_level = INFO;
@@ -343,21 +409,26 @@ int main(int argc, char* argv[])
     strcpy(maintask.message, "-");
     maintask.message_length = strlen(maintask.message); 
    
+    /*lock the main queue mutex*/
     pthread_mutex_lock(&main_log_queue_mutex);
+   
     /*send the message to the queue and check for success*/
     if(mq_send(main_log_mqdes1,(const char *)&maintask, sizeof(maintask),0) == -1)
     {
       printf("\nERROR: mqsend\n");
     }
-    else if(main_log_queue_count < 10)
+    else if(main_log_queue_count < 10) /*check if messages on queue does not exceed*/
     {
       main_log_queue_count++;
       printf("\nMESSAGE SENT. LOG QUEUE COUNT IS %d\n",main_log_queue_count);
     }
+    
+    /*unlock the main queue mutex*/
     pthread_mutex_unlock(&main_log_queue_mutex);
 
    }  
 
+  /*create thread for decision task and check for return*/
   return_value = pthread_create(&decision_thread,NULL,&decision_function,NULL);
   if(return_value == -1)
   {
@@ -366,6 +437,7 @@ int main(int argc, char* argv[])
   }
   else
   {
+    /*if successful creation, log it*/
     time_t a = time(NULL);
     maintask.current_time = ctime(&a);
     maintask.logged_level = INFO;
@@ -374,49 +446,53 @@ int main(int argc, char* argv[])
     strcpy(maintask.message, "-");
     maintask.message_length = strlen(maintask.message); 
    
+    /*lock the main queue mutex*/
     pthread_mutex_lock(&main_log_queue_mutex);
+
     /*send the message to the queue and check for success*/
     if(mq_send(main_log_mqdes1,(const char *)&maintask, sizeof(maintask),0) == -1)
     {
       printf("\nERROR: mqsend\n");
     }
-    else if(main_log_queue_count < 10)
+    else if(main_log_queue_count < 10) /*check if messages on queue does not exceed*/
     {
       main_log_queue_count++;
       printf("\nMESSAGE SENT. LOG QUEUE COUNT IS %d\n",main_log_queue_count);
     }
+    
+    /*unlock the main queue mutex*/
     pthread_mutex_unlock(&main_log_queue_mutex);
 
    }  
-  /*structure for timer*/
+  
+  /*structure for timer for periodic firing of task*/
   struct itimerval timer;
   timer = setup_timer(SEC_VALUE, USEC_VALUE);
   setitimer(ITIMER_REAL, &timer, NULL);
   
+  /*structure for timer for timedcond_wait*/
   struct timespec ts;
 
   while(1)
   {
-    if(exit_flag == 1)
-    {
-      break;
-    }
-
+   
+    /*increment count for async request*/
     main_count++;
     
+    /*if main count = 10, send sync request to temp task*/
     if(main_count == 10)
     {
       r_log send;
       send.Destination_task_ID = 2;
       send.Source_task_ID = 1;
-      send.command = 'C';
+      send.command = 'k';
       send.delay = 0;
       if(mq_send(tr_mqdes1,(const char *)&send, sizeof(send),0) == -1)
       {
         printf("\nERROR: mqsend\n");
       }
     }
-    else if(main_count == 15)
+    else if(main_count == 15) /*if main count15, send async request to light task*/
     {
       r_log send;
       send.Destination_task_ID = 3;
@@ -429,7 +505,9 @@ int main(int argc, char* argv[])
 
     }
 
-    ts = heartbeat_setup(3,4000000);
+    /*setup heartneaet for every 2 seconds*/
+    ts = heartbeat_setup(2,4000000);
+    
     if(exit_flag == 1)
     {
       printf("\nBREAKING FROM MAIN\n");
@@ -437,17 +515,20 @@ int main(int argc, char* argv[])
     }
     else
     {
+      /*check for heartbeat from temperature task using pthread_cond_timedwait*/
       pthread_mutex_lock(&main_thread1_mutex);
       return_value = pthread_cond_timedwait(&main_thread1_cond,&main_thread1_mutex,&ts); 
       pthread_mutex_unlock(&main_thread1_mutex);
 
+      /*check the return value*/
       if(return_value == 0)
       {
         printf("\nThread one is working\n");
       }
       else
       {
-        printf("\nTHREAD 1 FASSS GAYA\n");
+        /*if thread 1 is stuck, log it and call signal handler for graceful exit*/
+        printf("\nTHREAD 1 STUCK!!!!!!!!!!!\n");
         time_t a = time(NULL);
         maintask.current_time = ctime(&a);
         maintask.logged_level = ERROR;
@@ -456,6 +537,9 @@ int main(int argc, char* argv[])
         strcpy(maintask.message, " -");
         maintask.message_length = strlen(maintask.message); 
         
+        /*lock the main queue mutex*/
+        pthread_mutex_lock(&main_log_queue_mutex);
+ 
         /*send the message to the queue and check for success*/
         if(mq_send(main_log_mqdes1,(const char *)&maintask, sizeof(maintask),0) == -1)
         {
@@ -465,20 +549,30 @@ int main(int argc, char* argv[])
         {
           main_log_queue_count++;
         }
+
+        /*unlock the main queue mutex*/
+        pthread_mutex_unlock(&main_log_queue_mutex);
+ 
+        /*call signal handler for graceful exit*/ 
         signal_handler();
         continue;
       }
       
+      /*check for heartbeat from light task using pthread_cond_timedwait*/
       pthread_mutex_lock(&main_thread2_mutex);
       return_value = pthread_cond_timedwait(&main_thread2_cond,&main_thread2_mutex,&ts);
       pthread_mutex_unlock(&main_thread2_mutex);
+      
+      /*check the return value*/
       if(return_value == 0)
       {
         printf("\nThread 2 is working\n");
       }
       else
       {
-        printf("\nTHREAD 2 FASSS GAYA\n");
+
+        /*if thread 2 is stuck, log it and call signal handler for graceful exit*/
+        printf("\nTHREAD 2 STUCK!!!!!\n");
         time_t a = time(NULL);
         maintask.current_time = ctime(&a);
         maintask.logged_level = ERROR;
@@ -486,7 +580,10 @@ int main(int argc, char* argv[])
         strcpy(maintask.message_string, "THREAD LIGHT STUCK!!!! ABORTYING EVERYTHING");
         strcpy(maintask.message, " -");
         maintask.message_length = strlen(maintask.message); 
-        
+       
+        /*lock the main queue mutex*/
+        pthread_mutex_lock(&main_log_queue_mutex);
+  
         /*send the message to the queue and check for success*/
         if(mq_send(main_log_mqdes1,(const char *)&maintask, sizeof(maintask),0) == -1)
         {
@@ -497,21 +594,29 @@ int main(int argc, char* argv[])
           main_log_queue_count++;
         }
        
+        /*unlock the main queue mutex*/
+        pthread_mutex_unlock(&main_log_queue_mutex);
+ 
+        /*call signal handler for graceful exit*/ 
         signal_handler();
         continue;
       }
 
 
+      /*check for heartbeat from decision task using pthread_cond_timedwait*/
       pthread_mutex_lock(&main_thread3_mutex);
       return_value = pthread_cond_timedwait(&main_thread3_cond,&main_thread3_mutex,&ts); 
       pthread_mutex_unlock(&main_thread3_mutex);
+      
+      /*check the return value*/
       if(return_value == 0)
       {
           printf("\nThread three is working\n");;
       }      
       else
       {
-        printf("\nTHREAD 3 FASSS GAYA\n");
+        /*if thread 3 is stuck, log it and call signal handler for graceful exit*/
+        printf("\nTHREAD 3 STUCK!!!!!!!!\n");
         time_t a = time(NULL);
 
         maintask.current_time = ctime(&a);
@@ -521,6 +626,10 @@ int main(int argc, char* argv[])
         strcpy(maintask.message, " -");
         maintask.message_length = strlen(maintask.message); 
         
+        /*lock the main queue mutex*/
+        pthread_mutex_lock(&main_log_queue_mutex);
+ 
+ 
         /*send the message to the queue and check for success*/
         if(mq_send(main_log_mqdes1,(const char *)&maintask, sizeof(maintask),0) == -1)
         {
@@ -531,20 +640,28 @@ int main(int argc, char* argv[])
           main_log_queue_count++;
         }
 
+        /*unlock the main queue mutex*/
+        pthread_mutex_unlock(&main_log_queue_mutex);
+ 
+        /*call signal handler for graceful exit*/ 
         signal_handler();
         continue;
       }
          
+      /*check for heartbeat from decision task using pthread_cond_timedwait*/
       pthread_mutex_lock(&main_thread4_mutex);
       return_value = pthread_cond_timedwait(&main_thread4_cond,&main_thread4_mutex,&ts); 
       pthread_mutex_unlock(&main_thread4_mutex);
+      
+      /*check the return value*/
       if(return_value == 0)
       {
         printf("\nThread four is working\n");
       }
       else
       {
-        printf("\nTHREAD 2 FASSS GAYA\n");
+        /*if thread 4 is stuck, log it and call signal handler for graceful exit*/
+        printf("\nTHREAD 4 FASSS GAYA\n");
         time_t a = time(NULL);
         maintask.current_time = ctime(&a);
         maintask.logged_level = ERROR;
@@ -553,6 +670,10 @@ int main(int argc, char* argv[])
         strcpy(maintask.message, " -");
         maintask.message_length = strlen(maintask.message); 
         
+        /*lock the main queue mutex*/
+        pthread_mutex_lock(&main_log_queue_mutex);
+ 
+ 
         /*send the message to the queue and check for success*/
         if(mq_send(main_log_mqdes1,(const char *)&maintask, sizeof(maintask),0) == -1)
         {
@@ -563,112 +684,119 @@ int main(int argc, char* argv[])
           main_log_queue_count++;
         }
 
+        /*unlock the main queue mutex*/
+        pthread_mutex_unlock(&main_log_queue_mutex);
+ 
+        /*call signal handler for graceful exit*/ 
         signal_handler();
         continue;
       }
         
-    usleep(10000);
+    usleep(1000);
 
     }
   }
+
+  /*wait for all children to exit*/
   pthread_join(temp_thread, NULL);
   pthread_join(light_thread, NULL);
   pthread_join(logger_thread, NULL);
- 
+  pthread_join(decision_thread, NULL);
+  
   printf("\nALL CHILDREN ARE DEAD !!!!\n");
 
-  /*destroy the mutex*/
+  /*destroy the decision queue mutex*/
   return_value = pthread_mutex_destroy(&decision_queue_mutex);
   if(return_value)
   {
     printf("\nPthread DECISION MUTEX destroy: FAILED\n");
   }
 
-  /*destroy the mutex*/
+  /*destroy the main queue mutex and check for return*/
   return_value = pthread_mutex_destroy(&main_log_queue_mutex);
   if(return_value)
   {
     printf("\nPthread MAIN LOG MUTEX destroy: FAILED\n");
   }
 
-  /*destroy the mutex*/
+  /*destroy the temperature queue mutex and check for return*/
   return_value = pthread_mutex_destroy(&temp_log_queue_mutex);
   if(return_value)
   {
     printf("\nPthread TEMP LOG MUTEX destroy: FAILED\n");
   }
 
-  /*destroy the condition variable*/
+  /*destroy the temperature condition variable and check for return*/
   return_value =  pthread_cond_destroy(&temp_task_cond);
   if(return_value)
   {
     printf("\nPthread TEMP LOG COND destroy: FAILED\n");
   }
 
-  /*destroy the mutex*/
+  /*destroy the light queue mutex and check for return*/
   return_value = pthread_mutex_destroy(&light_log_queue_mutex);
   if(return_value)
   {
     printf("\nPthread LIGHT LOG QUEUE MUTEX destroy: FAILED\n");
   }
 
-  /*destroy the condition variable*/
+  /*destroy the light condition variable and check for return*/
   return_value =  pthread_cond_destroy(&light_task_cond);
   if(return_value)
   {
     printf("\nPthread LIGHT LOG COND destroy: FAILED\n");
   }
 
-  /*destroy the mutex*/
+  /*destroy the main thread 1 mutex and check for return*/
   return_value = pthread_mutex_destroy(&main_thread1_mutex);
   if(return_value)
   {
     printf("\nPthread main mutex 1 destroy: FAILED\n");
   }
 
-  /*destroy the condition variable*/
+  /*destroy the  main thread 1 condition variable and check for return*/
   return_value =  pthread_cond_destroy(&main_thread1_cond);
   if(return_value)
   {
     printf("\nPthread main cond 1 destroy: FAILED\n");
   }
 
-  /*destroy the mutex*/
+  /*destroy the  main thread 2 mutex and check for return*/
   return_value = pthread_mutex_destroy(&main_thread2_mutex);
   if(return_value)
   {
     printf("\nPthread main mutex 2 destroy: FAILED\n");
   }
 
-  /*destroy the condition variable*/
+  /*destroy the main thread 2  condition variable and check for return*/
   return_value =  pthread_cond_destroy(&main_thread2_cond);
   if(return_value)
   {
     printf("\nPthread main cond 2 destroy: FAILED\n");
   }
 
-  /*destroy the mutex*/
+  /*destroy the main thread 3  mutex and check for return*/
   return_value = pthread_mutex_destroy(&main_thread3_mutex);
   if(return_value)
   {
     printf("\nPthread main mutex 3 destroy: FAILED\n");
   }
 
-  /*destroy the condition variable*/
+  /*destroy the main thread 3  condition variable and check for return*/
   return_value =  pthread_cond_destroy(&main_thread3_cond);
   if(return_value)
   {
     printf("\nPthread main cond 3 destroy: FAILED\n");
   }
 
-  /*destroy the mutex*/
+  /*destroy the main thread 4  mutex and check for return*/
   return_value = pthread_mutex_destroy(&main_thread4_mutex);
   if(return_value)
   {
     printf("\nPthread main mutex 4 destroy: FAILED\n");
   }
 
-  /*destroy the condition variable*/
+  /*destroy the main thread 4  condition variable and check for return*/
   return_value =  pthread_cond_destroy(&main_thread4_cond);
   if(return_value)
   {
@@ -676,9 +804,22 @@ int main(int argc, char* argv[])
   }
 
 
+  /*close light log queue*/
   mq_close(light_log_mqdes1);
+  
+  /*close temp log queue*/
   mq_close(temp_log_mqdes1);
+  
+  /*close decision log queue*/
   mq_close(decision_mqdes1);
+  
+  /*close temperature request queue*/
+  mq_close(tr_mqdes1);
+  
+  /*close loght request queue*/
+  mq_close(lr_mqdes1);
+
+
 
   printf("\nEXIT MAIN THREAD!! BYE BYE\n");
   return 0;
