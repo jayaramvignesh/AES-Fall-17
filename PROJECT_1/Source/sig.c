@@ -1,3 +1,23 @@
+/****************************************************************************
+*   Authors: Arundhath Swami and Vignesh Jayaram
+*   date edited: 2nd Nov 2017
+*
+*   file: sig.c
+*
+*   description:
+*
+*   -source file for signal
+*
+*   - signal handler definition
+*     - on receiving signal, broadcast condition, add to log and set exit flag
+*
+*   - setup the signal
+*       
+*****************************************************************************/
+
+
+
+
 #include "sig.h"
 
 /*Signal handler for SIGINT*/
