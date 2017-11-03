@@ -1,6 +1,29 @@
+/****************************************************************************
+*   Authors: Arundhath Swami and Vignesh Jayaram
+*   date edited: 2nd Nov 2017
+*
+*   file: logger.c
+*
+*   description:
+*
+*   -source file for logger thread
+*
+*   -this thread sends a signal to release the main thread cond24
+*   and to indicate it is alive. This is done at start of while 1
+*
+*   -exit flag is checked for pthread_exit
+*
+*   -gets messages from every queue and writes them to log file
+*
+*
+*****************************************************************************/
+
+
+
+
 #include "logger.h"
 
-/*function for thread 3*/
+/*function for logger thread */
 void *logger_function()
 {
 
@@ -9,10 +32,15 @@ void *logger_function()
   printf("\nI am here : Logger Task\n");
   while(1)
   {  
+    /*send condition signal to main indicating alive*/
     pthread_cond_broadcast(&main_thread3_cond);
+
     char buffer[MSG_SIZE];
-    /*lock the mutex and wait for timer to fire*/
+    
+    /*try to lock the mutex*/
     ret_value = pthread_mutex_trylock(&temp_log_queue_mutex);
+    
+    /*if successful, then get messages*/
     if(ret_value == 0)
     {
       /*get the attributes for the queue*/
@@ -27,6 +55,8 @@ void *logger_function()
           char logger_level_string[200];
           char task_name[200];
           m_log receiver; 
+
+          /*receive all the messages from queue*/
           while(attr.mq_curmsgs != 0)
           {
             Msg_no++;
@@ -76,19 +106,29 @@ void *logger_function()
               printf("ERROR: NO FILE");
             }
             
+            /*write to logger file*/
             fwrite(buffer,1,strlen(buffer),fd);
+
+            /*close the file*/
             fclose(fd);
+
+            /*get attributes to check for remaining messages on queue*/
             mq_getattr(temp_log_mqdes1,&attr);
           }
 
+          /*reset queue count*/
           temp_log_queue_count = 0;
         }
       }
       
+      /*unclock mutex*/
       pthread_mutex_unlock(&temp_log_queue_mutex);
     }
 
+    /*try to lock the mutex*/
     ret_value = pthread_mutex_trylock(&light_log_queue_mutex);
+    
+    /*if successful, then get messages*/
     if(ret_value == 0)
     {
       /*get the attributes for the queue*/
@@ -151,22 +191,30 @@ void *logger_function()
             {
               printf("ERROR: NO FILE");
             }
-            
+           
+            /*write to file*/
             fwrite(buffer,1,strlen(buffer),fd);
+            
+            /*close the file*/
             fclose(fd);
             
             mq_getattr(light_log_mqdes1,&attr);
           }
 
+          /*reset the count*/
           light_log_queue_count = 0;
         }
       }
       
+      /*unlock the mutex*/
       pthread_mutex_unlock(&light_log_queue_mutex);
     
     }
     
+    /*try to lock the mutex*/
     ret_value = pthread_mutex_trylock(&main_log_queue_mutex);
+    
+    /*if successful, then get messages*/
     if(ret_value == 0)
     {
       /*get the attributes for the queue*/
@@ -230,27 +278,33 @@ void *logger_function()
               printf("ERROR: NO FILE");
             }
             
+            /*write to file*/
             fwrite(buffer,1,strlen(buffer),fd);
+            
+            /*close the file*/
             fclose(fd);
            
             mq_getattr(main_log_mqdes1,&attr);
           }
 
+          /*reset count*/
           main_log_queue_count = 0;
         }
       }
       
+      /*unlock mutex*/
       pthread_mutex_unlock(&main_log_queue_mutex);
     
     }
 
 
+    /*check for graceful exit*/
     if(exit_flag == 1)
     {
        break;
     }
-    
-    /*unlock the mutex and exit*/
+   
+    /*sleep*/
     usleep(15000);
   }
   
