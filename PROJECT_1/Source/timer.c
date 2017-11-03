@@ -1,3 +1,25 @@
+/****************************************************************************
+*   Authors: Arundhath Swami and Vignesh Jayaram
+*   date edited: 2nd Nov 2017
+*
+*   file: timer.c
+*
+*   description:
+*
+*   -source file for timer
+*
+*   -set up timer for heartbeat (cond timed wait)
+*
+*   -set up timer for periodic firing
+*
+*   -set up handler for timer callback when timer fires
+*       
+*****************************************************************************/
+
+
+
+
+
 #include "timer.h"
 
 /*Timer setup for Heartbeat*/
