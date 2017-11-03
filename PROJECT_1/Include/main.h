@@ -1,3 +1,18 @@
+/*************************************************************************
+*   Authors: Arundhath Swami and Vignesh Jayaram
+*   date edited: 2nd Nov 2017
+*
+*   file: main.h
+*
+*   description:
+*
+*   -Main header file for project1
+*
+*****************************************************************************/
+
+
+
+
 #ifndef _MAIN_H
 #define _MAIN_H
 
@@ -34,7 +49,7 @@ pthread_mutex_t decision_queue_mutex;
 pthread_cond_t temp_task_cond;
 pthread_cond_t light_task_cond;
 
-/*mutex and condition variables for main to monitor three tasks*/
+/*mutex and condition variables for main to monitor four tasks*/
 pthread_mutex_t main_thread1_mutex;
 pthread_cond_t main_thread1_cond;
 
