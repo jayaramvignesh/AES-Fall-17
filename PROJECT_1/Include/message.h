@@ -1,3 +1,19 @@
+/*************************************************************************
+*   Authors: Arundhath Swami and Vignesh Jayaram
+*   date edited: 2nd Nov 2017
+*
+*   file: message.h
+*
+*   description:
+*
+*   -header file containing global declarations for queue.
+*
+*****************************************************************************/
+
+
+
+
+
 #ifndef _MESSAGE_H
 #define _MESSAGE_H
 
