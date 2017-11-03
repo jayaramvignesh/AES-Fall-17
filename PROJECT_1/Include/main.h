@@ -38,6 +38,15 @@
 /*final file name with path to be stored*/
 char final_file[100];
 
+typedef enum pthread_Error
+{ 
+  PTHREAD_CREATE_FAIL = 1,
+  PTHREAD_MUTEX_INIT_FAIL,
+  PTHREAD_COND_INIT_FAIL,
+  PTHREAD_MUTEX_DESTROY_FAIL,
+  PTHREAD_COND_DESTROY_FAIl
+}p_error;
+
 
 /*mutex for different queues*/
 pthread_mutex_t main_log_queue_mutex;
