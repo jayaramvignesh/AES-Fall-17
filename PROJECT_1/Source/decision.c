@@ -1,22 +1,54 @@
+/*************************************************************************
+*   Authors: Arundhath Swami and Vignesh Jayaram
+*   date edited: 2nd Nov 2017
+*
+*   file: decision.c
+*
+*   description:
+*
+*   -source file for decision thread
+*
+*   -this thread sends a signal to release the main thread cond4
+*   and to indicate it is alive. This is done at start of while 1
+*
+*   -exit flag is checked for pthread_exit
+*
+*   -messages from queues (if there) are read
+*
+*   -these messages are checked for their source task using log id
+*
+*   -the data is extracted and checked for condition.
+*
+*   -if data exceeds condition, appropriate decision is taken
+* 
+*      
+**************************************************************************/
+
+
 #include "decision.h"
 
-/*function for thread 4*/
+/*function for decsion thread */
 void *decision_function()
 {
   while(1)
   {
  
+    /*check for graceful exit*/
     if(exit_flag == 1)
     {
         break;
     }
 
-  
+    /*send condition signal to main indicating alive*/
     pthread_cond_broadcast(&main_thread4_cond); 
+
     char buffer[MSG_SIZE];
+    
     /*lock the mutex and wait for timer to fire*/
     pthread_mutex_lock(&decision_queue_mutex);
+    
     printf("\nInside thread 4\n");  
+    
     /*get the attributes for the queue*/
     mq_getattr(decision_mqdes1,&attr);
     
@@ -27,10 +59,13 @@ void *decision_function()
       char logger_level_string[200];
       char task_name[200];
       m_log receiver;
+     
+      /*read messages until queue is empty*/
       while(attr.mq_curmsgs != 0)
       {
         Msg_no++;
       
+        /*get the message from queue*/
         int n = mq_receive(decision_mqdes1,(char*)&receiver,MSG_SIZE,NULL);
       
         /*check for which task*/
@@ -40,9 +75,13 @@ void *decision_function()
         }
         else if(receiver.task_ID == 2)
         {
+          /*check if logged level is SENSOR DATA*/
           if(receiver.logged_level == 1)
           {
+            /*convert the data from string to INT*/
             int value = atoi(receiver.message);
+            
+            /*check for condition*/
             if(value < 75 && value > 50)
             {
               printf("\nALERT!!!! ALERT!!!! ALERT!!!!! TEMPERATURE LIMIT EXCEEEDED\n");
@@ -51,9 +90,14 @@ void *decision_function()
         }
         else if(receiver.task_ID == 3)
         {
+          /*check if logged level is SENSOR DATA*/
           if(receiver.logged_level == 1)
           {
+        
+            /*convert the data from string to INT*/
             int value = atoi(receiver.message);
+            
+            /*check for condition*/
             if(value < 50 && value > 25)
             {
               printf("\nALERT!!!! ALERT!!!! ALERT!!!!! LIGHTTT LIMIT EXCEEEDED\n");
@@ -64,24 +108,12 @@ void *decision_function()
         {
           printf("\nTASK LOGGER. NO DECISION TO BE MADE\n");
         }
-
-        /*check logger level*/
-        if(receiver.logged_level == 1)
-        {
-          strcpy(logger_level_string,"SENSOR_DATA");
-        }
-        else if(receiver.logged_level == 2)
-        {
-          strcpy(logger_level_string,"ERROR");
-        }
-        else if(receiver.logged_level == 3)
-        {
-          strcpy(logger_level_string,"INFO");
-        }
   
+        /*get attributes to check for remaining messages on queue*/
         mq_getattr(decision_mqdes1,&attr);
       }
       
+      /*reset the queue count*/
       decision_queue_count = 0;
     }
     
@@ -90,6 +122,7 @@ void *decision_function()
     usleep(150000);
   }
   
+  /*exit the thread*/
   printf("\nEXITTTTTTTTTTTTT THREADDDDDDDDDDDDDD 4\n");
   pthread_exit(NULL);
 
