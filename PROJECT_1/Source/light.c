@@ -1,3 +1,29 @@
+/****************************************************************************
+*   Authors: Arundhath Swami and Vignesh Jayaram
+*   date edited: 2nd Nov 2017
+*
+*   file: light.c
+*
+*   description:
+*
+*   -source file for light thread
+*
+*   -this thread sends a signal to release the main thread cond24
+*   and to indicate it is alive. This is done at start of while 1
+*
+*   -exit flag is checked for pthread_exit
+*
+*   -the task sends an async request to temperature task
+*
+*   - task checks for requests and services them and adds them to log file
+*
+*   - if no requests, collects light data and adds them to log file
+*
+*       
+*****************************************************************************/
+
+
+
 #include "light.h"
 
 /*function for light thread*/
@@ -9,8 +35,18 @@ void *light_function()
   light_tk.task_ID = light_task;
   while(1)
   {
+    /*send condition to main indicating alive*/
     pthread_cond_broadcast(&main_thread2_cond);
+    
+    /*check for graceful exit*/
+    if(exit_flag == 1)
+    {
+      break;
+    }
+
     l_c++;
+    
+    /*if count == 10, send async request to temperature thread*/
     if(l_c == 10)
     {
       r_log send;
@@ -24,24 +60,27 @@ void *light_function()
       }
     }
     
-    if(exit_flag == 1)
-    {
-      break;
-    }
-    
+    /*get attributes for request queue*/
     mq_getattr(lr_mqdes1,&attr);
 
+    /*check for messages on request queue*/
     if(attr.mq_curmsgs != 0)
     {
+      /*if present service all the requests*/
       while(attr.mq_curmsgs != 0)
       {
        
         char source_req[100];
         char request[100];
         r_log receiver;
+        
+        /*receive the request*/
         int n = mq_receive(lr_mqdes1,(char*)&receiver,MSG_SIZE,NULL);
+        
+        /*check of request is for light task*/ 
         if(receiver.Destination_task_ID == 3)
         {
+          /*check which task sent request*/
           if(receiver.Source_task_ID == 1)
           {
             strcpy(source_req, "MAIN TASK");
@@ -53,6 +92,7 @@ void *light_function()
 
           printf("\n\n\nREQUEST SENDER: %s\n\n\n",source_req);
 
+          /*check for command*/
           if(receiver.command == 'l' || receiver.command == 'L' )
           {
             printf("\n\n\nLIGHT DATA\n\n\n");
@@ -69,6 +109,7 @@ void *light_function()
             strcpy(light_tk.message, "-");
           }
 
+          /*add to log file*/
           time_t a = time(NULL);
           light_tk.current_time = ctime(&a);
           light_tk.logged_level = SENSOR_DATA;
@@ -77,11 +118,13 @@ void *light_function()
 
         }
         
+        /*get attribute to check for remaining request*/
         mq_getattr(lr_mqdes1,&attr);
       }
     }
     else
     {
+      /*get the light data*/
       time_t a = time(NULL);
       light_tk.current_time = ctime(&a);
       light_tk.logged_level = SENSOR_DATA;
@@ -91,8 +134,11 @@ void *light_function()
       light_tk.message_length = strlen(light_tk.message);
      }
 
-     /*lock the mutex and wait for timer to fire*/
+      /*lock the mutex and wait for timer to fire*/
       pthread_mutex_lock(&light_log_queue_mutex);
+
+
+      /*wait for timer to fire*/
       pthread_cond_wait(&light_task_cond,&light_log_queue_mutex); 
     
       printf("\nInside light thread\n");  
@@ -113,6 +159,7 @@ void *light_function()
 
 
       pthread_mutex_lock(&decision_queue_mutex);
+      
       /*send the message to the queue and check for success*/
       if(temp_tk.logged_level == SENSOR_DATA)
       {
@@ -131,6 +178,7 @@ void *light_function()
 
   }
 
+  /*kill thread*/
   printf("\nEXITTTTTTTTTTTT THREADDDDDDDDDDDDDD 2\n");
   pthread_exit(NULL);
 }
