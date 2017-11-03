@@ -222,14 +222,14 @@ int main(int argc, char* argv[])
   if(pthread_mutex_init(&temp_log_queue_mutex,NULL)!=0)
   {
       printf("\nERROR: MUTEX INIT FAILED \n");
-      return -1;
+      return PTHREAD_MUTEX_INIT_FAIL;
   }
 
   /*initialize mutex for light queue and check for return*/
   if(pthread_mutex_init(&light_log_queue_mutex,NULL)!=0)
   {
       printf("\nERROR: MUTEX INIT FAILED \n");
-      return -1;
+      return PTHREAD_MUTEX_INIT_FAIL;
   }
 
 
@@ -237,7 +237,7 @@ int main(int argc, char* argv[])
   if(pthread_mutex_init(&decision_queue_mutex,NULL)!=0)
   {
       printf("\nERROR: MUTEX INIT FAILED \n");
-      return -1;
+      return PTHREAD_MUTEX_INIT_FAIL;
   }
 
  
@@ -245,21 +245,21 @@ int main(int argc, char* argv[])
   if(pthread_cond_init(&light_task_cond,NULL)!=0)
   {
       printf("\nERROR: CONDITION INIT FAILED \n");
-      return -1;
+      return PTHREAD_COND_INIT_FAIL;
   }
 
   /*initialize condition variable for light task and check for return*/
   if(pthread_cond_init(&temp_task_cond,NULL)!=0)
   {
       printf("\nERROR: CONDITION INIT FAILED \n");
-      return -1;
+      return PTHREAD_COND_INIT_FAIL;
   }
 
   /*initialize mutex for heartbeat of thread 1  and check for return*/
   if(pthread_mutex_init(&main_thread1_mutex,NULL)!=0)
   {
       printf("\nERROR: MUTEX INIT FAILED \n");
-      return -1;
+      return PTHREAD_MUTEX_INIT_FAIL;
   }
 
 
@@ -267,49 +267,49 @@ int main(int argc, char* argv[])
   if(pthread_cond_init(&main_thread1_cond,NULL)!=0)
   {
       printf("\nERROR: CONDITION INIT FAILED \n");
-      return -1;
+      return PTHREAD_COND_INIT_FAIL;
   }
 
   /*initialize mutex  for heartbeat of thread 2 and check for return*/
   if(pthread_mutex_init(&main_thread2_mutex,NULL)!=0)
   {
       printf("\nERROR: MUTEX INIT FAILED \n");
-      return -1;
+      return PTHREAD_MUTEX_INIT_FAIL;
   }
 
   /*initialize condition variable for heartbeat of thread 2  and check for return*/
   if(pthread_cond_init(&main_thread2_cond,NULL)!=0)
   {
       printf("\nERROR: CONDITION INIT FAILED \n");
-      return -1;
+      return PTHREAD_COND_INIT_FAIL;
   }
 
   /*initialize mutex for heartbeat of thread 3  and check for return*/
   if(pthread_mutex_init(&main_thread3_mutex,NULL)!=0)
   {
       printf("\nERROR: MUTEX INIT FAILED \n");
-      return -1;
+      return PTHREAD_MUTEX_INIT_FAIL;
   }
 
   /*initialize condition variable for heartbeat of thread 3  and check for return*/
   if(pthread_cond_init(&main_thread3_cond,NULL)!=0)
   {
       printf("\nERROR: CONDITION INIT FAILED \n");
-      return -1;
+      return PTHREAD_COND_INIT_FAIL;
   }
 
   /*initialize mutex for heartbeat of thread 4  and check for return*/
   if(pthread_mutex_init(&main_thread4_mutex,NULL)!=0)
   {
       printf("\nERROR: MUTEX INIT FAILED \n");
-      return -1;
+      return PTHREAD_MUTEX_INIT_FAIL;
   }
 
   /*initialize condition variable for heartbeat of thread 4  and check for return*/
   if(pthread_cond_init(&main_thread4_cond,NULL)!=0)
   {
       printf("\nERROR: CONDITION INIT FAILED \n");
-      return -1;
+      return PTHREAD_COND_INIT_FAIL;
   }
 
   
@@ -321,7 +321,7 @@ int main(int argc, char* argv[])
   if(return_value == -1)
   {
     printf("\nERROR: PTHREAD CREATE FAILED\n");
-    return -1;
+    return PTHREAD_CREATE_FAIL;
   }
   else
   {
@@ -358,7 +358,7 @@ int main(int argc, char* argv[])
   if(return_value == -1)
   {
     printf("\nERROR: PTHREAD CREATE FAILED\n");
-    return -1;
+    return PTHREAD_CREATE_FAIL;
   }
   else
   {
@@ -396,7 +396,7 @@ int main(int argc, char* argv[])
   if(return_value == -1)
   {
     printf("\nERROR: PTHREAD CREATE FAILED\n");
-    return -1;
+    return PTHREAD_CREATE_FAIL;
   }
   else
   {
@@ -433,7 +433,7 @@ int main(int argc, char* argv[])
   if(return_value == -1)
   {
     printf("\nERROR: PTHREAD CREATE FAILED\n");
-    return -1;
+    return PTHREAD_CREATE_FAIL;
   }
   else
   {
