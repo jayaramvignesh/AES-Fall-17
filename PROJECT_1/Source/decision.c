@@ -84,7 +84,34 @@ void *decision_function()
             /*check for condition*/
             if(value < 75 && value > 50)
             {
+
+              time_t a = time(NULL);
+              maintask.current_time = ctime(&a);
+              maintask.task_ID = decision_task;
+              maintask.logged_level = ALERT;
+              strcpy(maintask.message_string,"ALERT!!! ALERT!!! ALERT!!! TEMPERATURE IN CELSIUS HAS EXCEEDED LIMIT");
+              sprintf(maintask.message,"%d",value);
+              maintask.message_length = strlen(maintask.message);  
               printf("\nALERT!!!! ALERT!!!! ALERT!!!!! TEMPERATURE LIMIT EXCEEEDED\n");
+              
+              /*lock the main queue mutex*/
+              pthread_mutex_lock(&main_log_queue_mutex);
+    
+              /*send the message to the queue and check for success*/
+              if(mq_send(main_log_mqdes1,(const char *)&maintask, sizeof(maintask),0) == -1)
+              {
+                printf("\nERROR: mqsend\n");
+                exit(1);
+              }
+              else if(main_log_queue_count < 10) /*check if messages on queue does not exceed*/
+              {
+                main_log_queue_count++;
+                printf("\nMESSAGE SENT. LOG QUEUE COUNT IS %d\n",main_log_queue_count);
+              }
+    
+              /*unlock the main queue mutex*/
+              pthread_mutex_unlock(&main_log_queue_mutex);
+ 
             }
           }
         }
@@ -100,6 +127,32 @@ void *decision_function()
             /*check for condition*/
             if(value < 50 && value > 25)
             {
+              time_t a = time(NULL);
+              maintask.current_time = ctime(&a);
+              maintask.task_ID = decision_task;
+              maintask.logged_level = ALERT;
+              strcpy(maintask.message_string,"ALERT!!! ALERT!!! ALERT!!! LIGHT VALUE HAS EXCEEDED LIMIT");
+              sprintf(maintask.message,"%d",value);
+              maintask.message_length = strlen(maintask.message);  
+              
+              /*lock the main queue mutex*/
+              pthread_mutex_lock(&main_log_queue_mutex);
+    
+              /*send the message to the queue and check for success*/
+              if(mq_send(main_log_mqdes1,(const char *)&maintask, sizeof(maintask),0) == -1)
+              {
+                printf("\nERROR: mqsend\n");
+                exit(1);
+              }
+              else if(main_log_queue_count < 10) /*check if messages on queue does not exceed*/
+              {
+                main_log_queue_count++;
+                printf("\nMESSAGE SENT. LOG QUEUE COUNT IS %d\n",main_log_queue_count);
+              }
+    
+              /*unlock the main queue mutex*/
+              pthread_mutex_unlock(&main_log_queue_mutex);
+ 
               printf("\nALERT!!!! ALERT!!!! ALERT!!!!! LIGHTTT LIMIT EXCEEEDED\n");
             }
           }
