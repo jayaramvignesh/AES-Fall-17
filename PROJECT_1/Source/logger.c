@@ -80,6 +80,10 @@ void *logger_function()
             {
               strcpy(task_name,"Logger");
             }
+            else if(receiver.task_ID == 5)
+            {
+              strcpy(task_name, "Decision");
+            }
 
             /*check logger level*/
             if(receiver.logged_level == 1)
@@ -93,6 +97,10 @@ void *logger_function()
             else if(receiver.logged_level == 3)
             {
               strcpy(logger_level_string,"INFO");
+            }
+            else if(receiver.logged_level == 4)
+            {
+              strcpy(logger_level_string, "ALERT");
             }
            
             /*content for logger file*/
@@ -166,6 +174,10 @@ void *logger_function()
             {
               strcpy(task_name,"Logger");
             }
+            else if(receiver.task_ID == 5)
+            {
+              strcpy(task_name, "Decision");
+            }
 
             /*check logger level*/
             if(receiver.logged_level == 1)
@@ -179,6 +191,10 @@ void *logger_function()
             else if(receiver.logged_level == 3)
             {
               strcpy(logger_level_string,"INFO");
+            }
+            else if(receiver.logged_level == 4)
+            {
+              strcpy(logger_level_string, "ALERT");
             }
            
             /*content for logger file*/
@@ -252,6 +268,10 @@ void *logger_function()
             {
               strcpy(task_name,"Logger");
             }
+            else if(receiver.task_ID == 5)
+            {
+              strcpy(task_name, "Decision");
+            }
 
             /*check logger level*/
             if(receiver.logged_level == 1)
@@ -265,6 +285,10 @@ void *logger_function()
             else if(receiver.logged_level == 3)
             {
               strcpy(logger_level_string,"INFO");
+            }
+            else if(receiver.logged_level == 4)
+            {
+              strcpy(logger_level_string, "ALERT");
             }
            
             /*content for logger file*/
