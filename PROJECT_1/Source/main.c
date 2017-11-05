@@ -38,23 +38,6 @@
 #include "light.h"
 #include "logger.h"
 
-/*declared to keep track of the messages on main queue*/
-sig_atomic_t main_log_queue_count = 0;
-
-/*declared to keep track of the messages on light queue*/
-sig_atomic_t light_log_queue_count = 0;
-
-/*declared to keep track of the messages on temperature queue*/
-sig_atomic_t temp_log_queue_count = 0;
-
-/*declared to keep track of the messages on decision queue*/
-sig_atomic_t decision_queue_count = 0;
-
-/*declared for graceful exit on SIGINT*/
-sig_atomic_t exit_flag = 0;
-
-/*declared to send async request from main to both tasks*/
-sig_atomic_t main_count = 0;
 
 /*variables to fire both tasks periodically*/
 sig_atomic_t temp_task_period = 1;
