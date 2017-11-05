@@ -33,14 +33,14 @@ void *decision_function()
   while(1)
   {
  
+    /*send condition signal to main indicating alive*/
+    pthread_cond_broadcast(&main_thread4_cond); 
+
     /*check for graceful exit*/
     if(exit_flag == 1)
     {
         break;
     }
-
-    /*send condition signal to main indicating alive*/
-    pthread_cond_broadcast(&main_thread4_cond); 
 
     char buffer[MSG_SIZE];
     
@@ -82,7 +82,7 @@ void *decision_function()
             int value = atoi(receiver.message);
             
             /*check for condition*/
-            if(value < 75 && value > 50)
+            if(value < 15 && value > 10)
             {
 
               time_t a = time(NULL);

@@ -557,7 +557,12 @@ int main(int argc, char* argv[])
         signal_handler();
         continue;
       }
-      
+     
+      if(exit_flag == 1)
+      {
+        printf("\nBREAKING FROM MAIN\n");
+        break;
+      } 
       /*check for heartbeat from light task using pthread_cond_timedwait*/
       pthread_mutex_lock(&main_thread2_mutex);
       return_value = pthread_cond_timedwait(&main_thread2_cond,&main_thread2_mutex,&ts);
@@ -602,6 +607,11 @@ int main(int argc, char* argv[])
         continue;
       }
 
+      if(exit_flag == 1)
+      {
+        printf("\nBREAKING FROM MAIN\n");
+        break;
+      }
 
       /*check for heartbeat from decision task using pthread_cond_timedwait*/
       pthread_mutex_lock(&main_thread3_mutex);
@@ -647,7 +657,12 @@ int main(int argc, char* argv[])
         signal_handler();
         continue;
       }
-         
+        
+      if(exit_flag == 1)
+      {
+        printf("\nBREAKING FROM MAIN\n");
+        break;
+      }   
       /*check for heartbeat from decision task using pthread_cond_timedwait*/
       pthread_mutex_lock(&main_thread4_mutex);
       return_value = pthread_cond_timedwait(&main_thread4_cond,&main_thread4_mutex,&ts); 

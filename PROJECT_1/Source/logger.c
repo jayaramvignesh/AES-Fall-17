@@ -325,6 +325,9 @@ void *logger_function()
     /*check for graceful exit*/
     if(exit_flag == 1)
     {
+      /*send condition signal to main indicating alive*/
+      pthread_cond_broadcast(&main_thread3_cond);
+
        break;
     }
    
