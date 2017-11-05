@@ -1,0 +1,728 @@
+MESSAGE NUMBER 1
+
+task:Main
+message:TEMPERATURE TASK SPAWNED!!!!!!
+data:-
+log_level:INFO
+timestamp:Sat Nov  4 21:59:36 2017
+
+MESSAGE NUMBER 2
+
+task:Main
+message:LIGHT TASK SPAWNED!!!!!!
+data:-
+log_level:INFO
+timestamp:Sat Nov  4 21:59:36 2017
+
+MESSAGE NUMBER 3
+
+task:Main
+message:LOGGER TASK SPAWNED!!!!!!
+data:-
+log_level:INFO
+timestamp:Sat Nov  4 21:59:36 2017
+
+MESSAGE NUMBER 4
+
+task:Main
+message:DECISION TASK SPAWNED!!!!!!
+data:-
+log_level:INFO
+timestamp:Sat Nov  4 21:59:36 2017
+
+MESSAGE NUMBER 5
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:18.042894
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:36 2017
+
+MESSAGE NUMBER 6
+
+task:Light
+message:LUMINOSITY VALUE
+data:86
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:36 2017
+
+MESSAGE NUMBER 7
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:17.146370
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:36 2017
+
+MESSAGE NUMBER 8
+
+task:Light
+message:LUMINOSITY VALUE
+data:77
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:36 2017
+
+MESSAGE NUMBER 9
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:4.242383
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:36 2017
+
+MESSAGE NUMBER 10
+
+task:Light
+message:LUMINOSITY VALUE
+data:93
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:36 2017
+
+MESSAGE NUMBER 11
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:16.497604
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 12
+
+task:Light
+message:LUMINOSITY VALUE
+data:86
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 13
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:11.896415
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 14
+
+task:Light
+message:LUMINOSITY VALUE
+data:49
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 15
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:10.252024
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 16
+
+task:Light
+message:LUMINOSITY VALUE
+data:27
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 17
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! TEMPERATURE IN CELSIUS HAS EXCEEDED LIMIT
+data:11.896415
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 18
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! LIGHT VALUE HAS EXCEEDED LIMIT
+data:49
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 19
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! LIGHT VALUE HAS EXCEEDED LIMIT
+data:27
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 20
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! TEMPERATURE IN CELSIUS HAS EXCEEDED LIMIT
+data:10.252024
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 21
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:11.025201
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 22
+
+task:Light
+message:LUMINOSITY VALUE
+data:90
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 23
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! TEMPERATURE IN CELSIUS HAS EXCEEDED LIMIT
+data:11.025201
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 24
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:19.675140
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 25
+
+task:Light
+message:LUMINOSITY VALUE
+data:63
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 26
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:13.651806
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 27
+
+task:Light
+message:LUMINOSITY VALUE
+data:26
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 28
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! TEMPERATURE IN CELSIUS HAS EXCEEDED LIMIT
+data:13.651806
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 29
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! LIGHT VALUE HAS EXCEEDED LIMIT
+data:26
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 30
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:3.040892
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 31
+
+task:Light
+message:REQUEST FROM TEMPEREATURE TASK: LIGHT DATA SHOULD BE COLLECTED IN EVERY 300 milliseconds
+data:-
+log_level:INFO
+timestamp:Sat Nov  4 21:59:37 2017
+
+MESSAGE NUMBER 32
+
+task:Light
+message:LUMINOSITY VALUE
+data:36
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:38 2017
+
+MESSAGE NUMBER 33
+
+task:Light
+message:LUMINOSITY VALUE
+data:11
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:38 2017
+
+MESSAGE NUMBER 34
+
+task:Temperature
+message:REQUEST FROM LIGHT TASK: TEMPERATURE DATA SHOULD BE COLLECTED IN EVERY 1000 milliseconds
+data:-
+log_level:INFO
+timestamp:Sat Nov  4 21:59:38 2017
+
+MESSAGE NUMBER 35
+
+task:Light
+message:LUMINOSITY VALUE
+data:68
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:38 2017
+
+MESSAGE NUMBER 36
+
+task:Light
+message:LUMINOSITY VALUE
+data:29
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:39 2017
+
+MESSAGE NUMBER 37
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! LIGHT VALUE HAS EXCEEDED LIMIT
+data:29
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:39 2017
+
+MESSAGE NUMBER 38
+
+task:Light
+message:LUMINOSITY VALUE
+data:82
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:39 2017
+
+MESSAGE NUMBER 39
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:2.947026
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:39 2017
+
+MESSAGE NUMBER 40
+
+task:Light
+message:LUMINOSITY VALUE
+data:30
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:39 2017
+
+MESSAGE NUMBER 41
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! LIGHT VALUE HAS EXCEEDED LIMIT
+data:30
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:39 2017
+
+MESSAGE NUMBER 42
+
+task:Light
+message:LUMINOSITY VALUE
+data:23
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:39 2017
+
+MESSAGE NUMBER 43
+
+task:Light
+message:LUMINOSITY VALUE
+data:67
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:40 2017
+
+MESSAGE NUMBER 44
+
+task:Light
+message:LUMINOSITY VALUE
+data:35
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:40 2017
+
+MESSAGE NUMBER 45
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! LIGHT VALUE HAS EXCEEDED LIMIT
+data:35
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:40 2017
+
+MESSAGE NUMBER 46
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:2.787229
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:40 2017
+
+MESSAGE NUMBER 47
+
+task:Light
+message:LUMINOSITY VALUE
+data:29
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:40 2017
+
+MESSAGE NUMBER 48
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! LIGHT VALUE HAS EXCEEDED LIMIT
+data:29
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:40 2017
+
+MESSAGE NUMBER 49
+
+task:Light
+message:LUMINOSITY VALUE
+data:22
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:41 2017
+
+MESSAGE NUMBER 50
+
+task:Light
+message:LUMINOSITY VALUE
+data:58
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:41 2017
+
+MESSAGE NUMBER 51
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:18.019798
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:41 2017
+
+MESSAGE NUMBER 52
+
+task:Light
+message:LUMINOSITY VALUE
+data:69
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:41 2017
+
+MESSAGE NUMBER 53
+
+task:Light
+message:LUMINOSITY VALUE
+data:93
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:42 2017
+
+MESSAGE NUMBER 54
+
+task:Light
+message:LUMINOSITY VALUE
+data:56
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:42 2017
+
+MESSAGE NUMBER 55
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:11.258981
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:42 2017
+
+MESSAGE NUMBER 56
+
+task:Light
+message:LUMINOSITY VALUE
+data:11
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:42 2017
+
+MESSAGE NUMBER 57
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! TEMPERATURE IN CELSIUS HAS EXCEEDED LIMIT
+data:11.258981
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:42 2017
+
+MESSAGE NUMBER 58
+
+task:Light
+message:LUMINOSITY VALUE
+data:29
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:42 2017
+
+MESSAGE NUMBER 59
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! LIGHT VALUE HAS EXCEEDED LIMIT
+data:29
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:42 2017
+
+MESSAGE NUMBER 60
+
+task:Light
+message:LUMINOSITY VALUE
+data:73
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:43 2017
+
+MESSAGE NUMBER 61
+
+task:Light
+message:LUMINOSITY VALUE
+data:21
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:43 2017
+
+MESSAGE NUMBER 62
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:16.564781
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:43 2017
+
+MESSAGE NUMBER 63
+
+task:Light
+message:LUMINOSITY VALUE
+data:19
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:43 2017
+
+MESSAGE NUMBER 64
+
+task:Light
+message:LUMINOSITY VALUE
+data:98
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:44 2017
+
+MESSAGE NUMBER 65
+
+task:Light
+message:LUMINOSITY VALUE
+data:24
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:44 2017
+
+MESSAGE NUMBER 66
+
+task:Temperature
+message:REQUEST FROM MAIN TASK: TEMPERATURE IN KELVIN
+data:37
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:44 2017
+
+MESSAGE NUMBER 67
+
+task:Light
+message:LUMINOSITY VALUE
+data:15
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:44 2017
+
+MESSAGE NUMBER 68
+
+task:Light
+message:LUMINOSITY VALUE
+data:13
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:45 2017
+
+MESSAGE NUMBER 69
+
+task:Light
+message:LUMINOSITY VALUE
+data:26
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:45 2017
+
+MESSAGE NUMBER 70
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! LIGHT VALUE HAS EXCEEDED LIMIT
+data:26
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:45 2017
+
+MESSAGE NUMBER 71
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:20.386642
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:45 2017
+
+MESSAGE NUMBER 72
+
+task:Light
+message:LUMINOSITY VALUE
+data:91
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:45 2017
+
+MESSAGE NUMBER 73
+
+task:Light
+message:LUMINOSITY VALUE
+data:80
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:45 2017
+
+MESSAGE NUMBER 74
+
+task:Light
+message:LUMINOSITY VALUE
+data:73
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:46 2017
+
+MESSAGE NUMBER 75
+
+task:Light
+message:LUMINOSITY VALUE
+data:62
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:46 2017
+
+MESSAGE NUMBER 76
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:19.117599
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:46 2017
+
+MESSAGE NUMBER 77
+
+task:Light
+message:LUMINOSITY VALUE
+data:70
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:46 2017
+
+MESSAGE NUMBER 78
+
+task:Light
+message:LUMINOSITY VALUE
+data:81
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:47 2017
+
+MESSAGE NUMBER 79
+
+task:Light
+message:LUMINOSITY VALUE
+data:5
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:47 2017
+
+MESSAGE NUMBER 80
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:9.829070
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:47 2017
+
+MESSAGE NUMBER 81
+
+task:Light
+message:LUMINOSITY VALUE
+data:25
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:47 2017
+
+MESSAGE NUMBER 82
+
+task:Light
+message:LUMINOSITY VALUE
+data:27
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:48 2017
+
+MESSAGE NUMBER 83
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! LIGHT VALUE HAS EXCEEDED LIMIT
+data:27
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:48 2017
+
+MESSAGE NUMBER 84
+
+task:Light
+message:REQUEST FROM MAIN TASK: LIGHT DATA
+data:36
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:48 2017
+
+MESSAGE NUMBER 85
+
+task:Decision
+message:ALERT!!! ALERT!!! ALERT!!! LIGHT VALUE HAS EXCEEDED LIMIT
+data:36
+log_level:ALERT
+timestamp:Sat Nov  4 21:59:48 2017
+
+MESSAGE NUMBER 86
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:19.374771
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:48 2017
+
+MESSAGE NUMBER 87
+
+task:Light
+message:LUMINOSITY VALUE
+data:5
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:48 2017
+
+MESSAGE NUMBER 88
+
+task:Light
+message:LUMINOSITY VALUE
+data:46
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:48 2017
+
+MESSAGE NUMBER 89
+
+task:Temperature
+message:TEMPERATURE IN CELSIUS
+data:16.326218
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:48 2017
+
+MESSAGE NUMBER 90
+
+task:Light
+message:LUMINOSITY VALUE
+data:13
+log_level:SENSOR_DATA
+timestamp:Sat Nov  4 21:59:48 2017
+
+MESSAGE NUMBER 91
+
+task:Main
+message:EXIT GRACEFULLYYY!!!!!!!!!!!
+data: - 
+log_level:INFO
+timestamp:Sat Nov  4 21:59:48 2017
+

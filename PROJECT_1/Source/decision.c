@@ -67,7 +67,6 @@ void *decision_function()
       
         /*get the message from queue*/
         int n = mq_receive(decision_mqdes1,(char*)&receiver,MSG_SIZE,NULL);
-      
         /*check for which task*/
         if(receiver.task_ID == 1)
         {
