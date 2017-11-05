@@ -29,8 +29,6 @@
 #include<signal.h>
 #include<sys/time.h>
 #include<time.h>
-#include<errno.h>
-#include<sys/time.h>
 
 #define SEC_VALUE 0
 #define USEC_VALUE 100000
@@ -72,12 +70,12 @@ pthread_mutex_t main_thread4_mutex;
 pthread_cond_t main_thread4_cond;
 
 /*global variables*/
-extern sig_atomic_t main_log_queue_count;
-extern sig_atomic_t light_log_queue_count;
-extern sig_atomic_t temp_log_queue_count; 
-extern sig_atomic_t decision_queue_count;
-extern sig_atomic_t exit_flag ;
-extern sig_atomic_t main_count;
+sig_atomic_t main_log_queue_count;
+sig_atomic_t light_log_queue_count;
+sig_atomic_t temp_log_queue_count; 
+sig_atomic_t decision_queue_count;
+sig_atomic_t exit_flag ;
+sig_atomic_t main_count;
 
 extern sig_atomic_t temp_task_period ;
 extern sig_atomic_t light_task_period;
