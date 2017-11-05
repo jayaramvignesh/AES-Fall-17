@@ -79,10 +79,10 @@ void *decision_function()
           if(receiver.logged_level == 1)
           {
             /*convert the data from string to INT*/
-            int value = atoi(receiver.message);
-            
+            float value = atof(receiver.message);
+            printf("\nTemperature value %f\n",value); 
             /*check for condition*/
-            if(value < 15 && value > 10)
+            if(value < 15.000 && value > 10.000)
             {
 
               time_t a = time(NULL);
@@ -90,7 +90,7 @@ void *decision_function()
               maintask.task_ID = decision_task;
               maintask.logged_level = ALERT;
               strcpy(maintask.message_string,"ALERT!!! ALERT!!! ALERT!!! TEMPERATURE IN CELSIUS HAS EXCEEDED LIMIT");
-              sprintf(maintask.message,"%d",value);
+              sprintf(maintask.message,"%f",value);
               maintask.message_length = strlen(maintask.message);  
               printf("\nALERT!!!! ALERT!!!! ALERT!!!!! TEMPERATURE LIMIT EXCEEEDED\n");
               

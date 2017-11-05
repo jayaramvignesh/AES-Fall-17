@@ -99,7 +99,7 @@ void *light_function()
             strcpy(request,"LIGHT DATA");
             int data = rand()%100;
             sprintf(light_tk.message,"%d",data);
-
+            light_tk.logged_level = SENSOR_DATA;
           }
           else if(receiver.command == 'd' || receiver.command == 'D')
           {
@@ -107,12 +107,12 @@ void *light_function()
             sprintf(request,"LIGHT DATA SHOULD BE COLLECTED IN EVERY %d milliseconds", ((receiver.delay*USEC_VALUE)/1000));
             light_task_period = receiver.delay;
             strcpy(light_tk.message, "-");
+            light_tk.logged_level = INFO;
           }
 
           /*add to log file*/
           time_t a = time(NULL);
           light_tk.current_time = ctime(&a);
-          light_tk.logged_level = SENSOR_DATA;
           sprintf(light_tk.message_string, "REQUEST FROM %s: %s",source_req,request);
           light_tk.message_length = strlen(light_tk.message);
 

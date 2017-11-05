@@ -120,6 +120,9 @@ void *logger_function()
             /*close the file*/
             fclose(fd);
 
+            /*reset buffer*/
+            memset(buffer,'\0',sizeof(buffer));
+
             /*get attributes to check for remaining messages on queue*/
             mq_getattr(temp_log_mqdes1,&attr);
           }
@@ -214,6 +217,10 @@ void *logger_function()
             /*close the file*/
             fclose(fd);
             
+            /*reset buffer*/
+            memset(buffer,'\0',sizeof(buffer));
+
+
             mq_getattr(light_log_mqdes1,&attr);
           }
 
@@ -308,6 +315,10 @@ void *logger_function()
             /*close the file*/
             fclose(fd);
            
+            /*reset buffer*/
+            memset(buffer,'\0',sizeof(buffer));
+
+
             mq_getattr(main_log_mqdes1,&attr);
           }
 

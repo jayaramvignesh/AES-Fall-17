@@ -29,8 +29,10 @@
 /*function for thread1*/
 void *temperature_function()
 {
+  m_log temp_decision_tk;
   sig_atomic_t t_c = 0;
   printf("\nI am here : Temperature Task\n");
+  temp_decision_tk.task_ID  = temperature_task;
   temp_tk.task_ID = temperature_task;
   while(1)
   {
@@ -93,40 +95,56 @@ void *temperature_function()
           /*check for command*/
           if(receiver.command == 'c' || receiver.command == 'C' )
           {
+            temp_tk.logged_level = SENSOR_DATA;
+            temp_decision_tk.logged_level  = SENSOR_DATA;
             printf("\n\n\nTEMPERATURE in CELSIUS\n\n\n");
             strcpy(request,"TEMPERATURE IN CELSIUS");
-            int data = rand()%100;
-            sprintf(temp_tk.message,"%d",data);
+            int c_data = rand()%100;
+            sprintf(temp_tk.message,"%d",c_data);
+            sprintf(temp_decision_tk.message,"%d",c_data);
           }
           else if(receiver.command == 'k' || receiver.command == 'K' )
           {
+            temp_tk.logged_level = SENSOR_DATA;
+            temp_decision_tk.logged_level  = SENSOR_DATA;
             printf("\n\n\nTEMPERATURE in KELVIN\n\n\n");
             strcpy(request,"TEMPERATURE IN KELVIN");
-            int data = rand()%100;
-            sprintf(temp_tk.message,"%d",data);
+            int c_data = rand()%100;
+            int k_data = rand()%100;
+            sprintf(temp_tk.message,"%d",k_data);
+            sprintf(temp_decision_tk.message,"%d",c_data);
           }
           else if(receiver.command == 'f' || receiver.command == 'F' )
           {
+            temp_tk.logged_level = SENSOR_DATA;
+            temp_decision_tk.logged_level  = SENSOR_DATA;
             printf("\n\n\nTEMPERATURE in FAHRENHEIT\n\n\n");
             strcpy(request,"TEMPERATURE IN FAHRENHEIT");
-            int data = rand()%100;
-            sprintf(temp_tk.message,"%d",data);
+            int f_data = rand()%100;
+            int c_data = rand()%100;
+            sprintf(temp_tk.message,"%d",f_data);
+            sprintf(temp_decision_tk.message,"%d",c_data);
           }
           else if(receiver.command == 'd' || receiver.command == 'D')
           {
+            temp_tk.logged_level = INFO;
+            temp_decision_tk.logged_level  = INFO;
             printf("\n\n\nTEMPERATURE DATA SHOULD BE COLLECTED IN EVERY %d milliseconds\n\n\n",receiver.delay);
             sprintf(request,"TEMPERATURE DATA SHOULD BE COLLECTED IN EVERY %d milliseconds", ((receiver.delay*USEC_VALUE)/1000));
             temp_task_period = receiver.delay;
             strcpy(temp_tk.message, "-");
+            strcpy(temp_decision_tk.message, "-");
           }
      
           /*add to log file*/
           time_t a = time(NULL);
           temp_tk.current_time = ctime(&a);
-          temp_tk.logged_level = SENSOR_DATA;
+          temp_decision_tk.current_time = ctime(&a);
           sprintf(temp_tk.message_string,"REQUEST FROM %s: %s",source_req,request);
+          sprintf(temp_decision_tk.message_string,"REQUEST FROM %s: %s",source_req,request);
           temp_tk.message_length = strlen(temp_tk.message);
-  
+          temp_decision_tk.message_length = strlen(temp_decision_tk.message);
+
         }
        
         /*get attribute to check for remaining request*/
@@ -138,11 +156,16 @@ void *temperature_function()
       /*get the temperature data*/
       time_t a = time(NULL);
       temp_tk.current_time = ctime(&a);
+      temp_decision_tk.current_time = ctime(&a);
       temp_tk.logged_level = SENSOR_DATA;
-      int data = rand()%100;
+      temp_decision_tk.logged_level = SENSOR_DATA;
+      float data = ((float)rand())/100000000;
       strcpy(temp_tk.message_string,"TEMPERATURE IN CELSIUS");
-      sprintf(temp_tk.message,"%d",data);
+      strcpy(temp_decision_tk.message_string,"TEMPERATURE IN CELSIUS");
+      sprintf(temp_tk.message,"%f",data);
+      sprintf(temp_decision_tk.message,"%f",data);
       temp_tk.message_length = strlen(temp_tk.message);  
+      temp_decision_tk.message_length = strlen(temp_tk.message);  
    }
 
       /*lock the mutex and wait for timer to fire*/
@@ -170,9 +193,9 @@ void *temperature_function()
       pthread_mutex_lock(&decision_queue_mutex);
       
       /*send the message to the queue and check for success*/
-      if(temp_tk.logged_level == SENSOR_DATA)
+      if(temp_decision_tk.logged_level == SENSOR_DATA)
       {
-        if(mq_send(decision_mqdes1,(const char *)&temp_tk, sizeof(temp_tk),0) == -1)
+        if(mq_send(decision_mqdes1,(const char *)&temp_decision_tk, sizeof(temp_decision_tk),0) == -1)
         {
           printf("\nERROR: mqsend\n");
         }
