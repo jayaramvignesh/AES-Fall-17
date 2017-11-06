@@ -54,31 +54,19 @@ int main(int argc, char* argv[])
   char path_name[100];
   char *path = getenv("PWD");
   strcpy(path_name,path);
-
-  /*get file name and path from user*/
-  char c;
-  while((c = getopt(argc,argv,"f:p:")) != -1)
+   
+  if(argc == 3)
   {
-    switch(c)
-    {
-      case 'f':
-        memset(file_name,0,100);
-        strcpy(file_name,optarg);
-        break;
-
-      case 'p':
-        memset(path_name,0,100);
-        strcpy(path_name,optarg);
-        break;
-
-      case '?':
-        printf("\nWrong arguments given!!!\n");
-        exit(1);
-
-      default:
-        exit(1);
-    }
-
+    strcpy(file_name,argv[1]);
+    strcpy(path_name, argv[2]);
+  }
+  else if(argc == 2)
+  {
+    strcpy(file_name,argv[1]);
+  }
+  else if(argc > 3)
+  {
+    printf("\nTOOOOOOO MANY ARGUMENTS PASSED\n");
   }
 
   strcat(path_name,"/");
@@ -486,6 +474,10 @@ int main(int argc, char* argv[])
         printf("\nERROR: mqsend\n");
       }
 
+    }
+    else if(main_count == 25)
+    {
+      pthread_cancel(decision_thread);
     }
 
     /*setup heartneaet for every 2 seconds*/
