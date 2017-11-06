@@ -18,6 +18,10 @@
 #include "message.h"
 #include "sig.h"
 #include "timer.h"
+#include"ERROR_LIB.h"
+#include"BBG_I2C2.h" 
+#include"APDS9301_lightsensor.h"
+
 
 void *light_function();
 

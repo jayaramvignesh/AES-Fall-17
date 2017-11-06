@@ -40,7 +40,7 @@
 
 
 /*variables to fire both tasks periodically*/
-sig_atomic_t temp_task_period = 1;
+sig_atomic_t temp_task_period = 2;
 sig_atomic_t light_task_period = 1;
 
 
@@ -474,10 +474,6 @@ int main(int argc, char* argv[])
         printf("\nERROR: mqsend\n");
       }
 
-    }
-    else if(main_count == 25)
-    {
-      pthread_cancel(decision_thread);
     }
 
     /*setup heartneaet for every 2 seconds*/

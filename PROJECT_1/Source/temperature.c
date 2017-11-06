@@ -34,6 +34,17 @@ void *temperature_function()
   printf("\nI am here : Temperature Task\n");
   temp_decision_tk.task_ID  = temperature_task;
   temp_tk.task_ID = temperature_task;
+  int file; 
+  uint8_t READ_BUFF[MAX_BUFFER_SIZE];
+  file = setupTempSensorDefault();
+  printf("\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n"); 
+ 
+   float cel = readTempC(file);
+  float far = readTempF(file);
+  float kel = readTempK(file);   
+  printf("Temperature: %0.2f C, %0.2f F, %0.2f K\n", cel, far, kel); 
+
+  printf("\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n"); 
   while(1)
   {
     /*send condition to main indicating alive*/
@@ -97,11 +108,11 @@ void *temperature_function()
           {
             temp_tk.logged_level = SENSOR_DATA;
             temp_decision_tk.logged_level  = SENSOR_DATA;
+            float c_data = readTempC(file);
             printf("\n\n\nTEMPERATURE in CELSIUS\n\n\n");
             strcpy(request,"TEMPERATURE IN CELSIUS");
-            int c_data = rand()%100;
-            sprintf(temp_tk.message,"%d",c_data);
-            sprintf(temp_decision_tk.message,"%d",c_data);
+            sprintf(temp_tk.message,"%f",c_data);
+            sprintf(temp_decision_tk.message,"%f",c_data);
           }
           else if(receiver.command == 'k' || receiver.command == 'K' )
           {
@@ -109,10 +120,10 @@ void *temperature_function()
             temp_decision_tk.logged_level  = SENSOR_DATA;
             printf("\n\n\nTEMPERATURE in KELVIN\n\n\n");
             strcpy(request,"TEMPERATURE IN KELVIN");
-            int c_data = rand()%100;
-            int k_data = rand()%100;
-            sprintf(temp_tk.message,"%d",k_data);
-            sprintf(temp_decision_tk.message,"%d",c_data);
+            float c_data = readTempC(file);
+            float k_data = readTempK(file);   
+            sprintf(temp_tk.message,"%f",k_data);
+            sprintf(temp_decision_tk.message,"%f",c_data);
           }
           else if(receiver.command == 'f' || receiver.command == 'F' )
           {
@@ -120,10 +131,10 @@ void *temperature_function()
             temp_decision_tk.logged_level  = SENSOR_DATA;
             printf("\n\n\nTEMPERATURE in FAHRENHEIT\n\n\n");
             strcpy(request,"TEMPERATURE IN FAHRENHEIT");
-            int f_data = rand()%100;
-            int c_data = rand()%100;
-            sprintf(temp_tk.message,"%d",f_data);
-            sprintf(temp_decision_tk.message,"%d",c_data);
+            float c_data = readTempC(file);
+            float f_data = readTempF(file);
+            sprintf(temp_tk.message,"%f",f_data);
+            sprintf(temp_decision_tk.message,"%f",c_data);
           }
           else if(receiver.command == 'd' || receiver.command == 'D')
           {
@@ -159,7 +170,7 @@ void *temperature_function()
       temp_decision_tk.current_time = ctime(&a);
       temp_tk.logged_level = SENSOR_DATA;
       temp_decision_tk.logged_level = SENSOR_DATA;
-      float data = -10.01;
+      float data = readTempC(file);
       strcpy(temp_tk.message_string,"TEMPERATURE IN CELSIUS");
       strcpy(temp_decision_tk.message_string,"TEMPERATURE IN CELSIUS");
       sprintf(temp_tk.message,"%f",data);

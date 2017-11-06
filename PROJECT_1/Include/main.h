@@ -29,6 +29,9 @@
 #include<signal.h>
 #include<sys/time.h>
 #include<time.h>
+#include<sys/ioctl.h> 
+#include<linux/i2c-dev.h> 
+#include<math.h>
 
 #define SEC_VALUE 0
 #define USEC_VALUE 100000

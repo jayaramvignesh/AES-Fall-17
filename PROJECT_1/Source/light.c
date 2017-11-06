@@ -33,6 +33,15 @@ void *light_function()
   sig_atomic_t l_c = 0;
   printf("\nI am here : Light Task\n");
   light_tk.task_ID = light_task;
+  printf("\nBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n");
+  int file;
+  file = InitLightSensor(); 
+  error_t ret = readIDReg(file); 
+  ret = configureSensorDefault(file); 
+  float lux = readLux(file);
+  printf("Returned Lux Value: %f\n", lux); 
+  printf("\nBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n");
+  
   while(1)
   {
     /*send condition to main indicating alive*/
@@ -97,8 +106,8 @@ void *light_function()
           {
             printf("\n\n\nLIGHT DATA\n\n\n");
             strcpy(request,"LIGHT DATA");
-            int data = rand()%100;
-            sprintf(light_tk.message,"%d",data);
+            float data = readLux(file);
+            sprintf(light_tk.message,"%f",data);
             light_tk.logged_level = SENSOR_DATA;
           }
           else if(receiver.command == 'd' || receiver.command == 'D')
@@ -128,9 +137,9 @@ void *light_function()
       time_t a = time(NULL);
       light_tk.current_time = ctime(&a);
       light_tk.logged_level = SENSOR_DATA;
-      strcpy(light_tk.message_string, "LUMINOSITY VALUE");
-      int data = rand()%100;
-      sprintf(light_tk.message,"%d",data);
+      strcpy(light_tk.message_string, "LUMINOSITY VALUE"); 
+      float data = readLux(file);
+      sprintf(light_tk.message,"%f",data);
       light_tk.message_length = strlen(light_tk.message);
      }
 

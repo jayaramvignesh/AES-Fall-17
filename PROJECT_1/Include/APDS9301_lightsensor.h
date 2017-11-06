@@ -13,7 +13,7 @@
 #include"BBG_I2C2.h"
 
 
-#define DEVICE_ADDR 0x39
+#define DEVICE_ADDR_LIGHT 0x39
 
 uint8_t WRITE_BUFF[MAX_BUFFER_SIZE]; 
 uint8_t DATA_BUFF[MAX_BUFFER_SIZE]; 

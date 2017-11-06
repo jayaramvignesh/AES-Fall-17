@@ -27,13 +27,13 @@ int InitLightSensor(void)
   int file;
   char filename[20];
   snprintf(filename, 19, "/dev/i2c-%d", I2C_NUM);
-  file = InitI2C2Slave(filename, DEVICE_ADDR);
+  file = InitI2C2Slave(filename, DEVICE_ADDR_LIGHT);
   if (file < 0)
   {
     return ESendFailed();
   }
   printf("init: %d\n", file); 
-  error_t ret  = setupI2C2Slave(file, DEVICE_ADDR);
+  error_t ret  = setupI2C2Slave(file, DEVICE_ADDR_LIGHT);
  if (ret < 0  || ret == SLAVE_INIT_FAILED)
   {
     return ESendFailed();
@@ -47,7 +47,7 @@ int InitLightSensor(void)
 error_t writeCommandReg(int file, uint8_t reg)
 {
   WRITE_BUFF[0] = reg; 
-  error_t ret = writeI2C2byte(file, DEVICE_ADDR, WRITE_BUFF[0], 0, 1);
+  error_t ret = writeI2C2byte(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], 0, 1);
  if (ret < 0 || ret == WRITE_FAILED)
   {
     return ESendFailed();
@@ -70,7 +70,7 @@ error_t readIDReg(int file)
   }
  
   uint8_t READ_BUFF[MAX_BUFFER_SIZE]; 
-  ret = readI2C2(file, DEVICE_ADDR, WRITE_BUFF[0], READ_BUFF);
+  ret = readI2C2(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], READ_BUFF);
   if (ret < 0 || ret == READ_FAILED)
   {
     return ESendFailed();
@@ -95,7 +95,7 @@ error_t configureSensorDefault(int file)
  
 
   WRITE_BUFF[0] = REG_CONTROL; //command reg to write to control register    
-  ret = writeI2C2byte(file, DEVICE_ADDR, WRITE_BUFF[0], POWER_UP, 2); 
+  ret = writeI2C2byte(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], POWER_UP, 2); 
   if (ret < 0 || ret == WRITE_FAILED)
   {
     return ESendFailed();
@@ -104,7 +104,7 @@ error_t configureSensorDefault(int file)
 
   /* writing to the timing register*/
   WRITE_BUFF[0] = REG_TIMING; //command reg to write to control register   
-  ret = writeI2C2byte(file, DEVICE_ADDR, WRITE_BUFF[0], TIMING_VALUE, 2); 
+  ret = writeI2C2byte(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], TIMING_VALUE, 2); 
   if (ret < 0 || ret == WRITE_FAILED)
   {
     return ESendFailed();
@@ -113,21 +113,21 @@ error_t configureSensorDefault(int file)
 
   /* writing to lower byte of lower threshold*/
   WRITE_BUFF[0] = REG_TH_LOW_LOWER; //command write to lower byte of low th
-  ret = writeI2C2byte(file, DEVICE_ADDR, WRITE_BUFF[0], TH_LOW_LOWER, 2); 
+  ret = writeI2C2byte(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], TH_LOW_LOWER, 2); 
   if (ret < 0 || ret == WRITE_FAILED)
   {
     return ESendFailed();
   }
   /* writing to higher byte of lower threshold*/
   WRITE_BUFF[0] = REG_TH_LOW_HIGHER; //command to higher byte of lower th    
-  ret = writeI2C2byte(file, DEVICE_ADDR, WRITE_BUFF[0], TH_LOW_HIGHER, 2); 
+  ret = writeI2C2byte(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], TH_LOW_HIGHER, 2); 
   if (ret < 0 || ret == WRITE_FAILED)
   {
     return ESendFailed();
   }
   /* writing to lower byte of higher threshold*/
   WRITE_BUFF[0] = REG_TH_HIGH_LOWER; //command write to lower byte high th   
-  ret = writeI2C2byte(file, DEVICE_ADDR, WRITE_BUFF[0], TH_HIGH_LOWER, 2); 
+  ret = writeI2C2byte(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], TH_HIGH_LOWER, 2); 
   if (ret < 0 || ret == WRITE_FAILED)
   {
     return ESendFailed();
@@ -135,7 +135,7 @@ error_t configureSensorDefault(int file)
 
   /* writing to higher byte of higher threshold*/
   WRITE_BUFF[0] = REG_TH_HIGH_HIGHER; //command write to lower byte high th  
-  ret = writeI2C2byte(file, DEVICE_ADDR, WRITE_BUFF[0], TH_HIGH_HIGHER, 2); 
+  ret = writeI2C2byte(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], TH_HIGH_HIGHER, 2); 
   if (ret < 0 || ret == WRITE_FAILED)
   {
     return ESendFailed();
@@ -143,7 +143,7 @@ error_t configureSensorDefault(int file)
   
   /* writing to interrupt reg*/
   WRITE_BUFF[0] = REG_INTERRUPT; //command write to interrupt reg    
-  ret = writeI2C2byte(file, DEVICE_ADDR, WRITE_BUFF[0],INTERRUPT_VALUE , 2); 
+  ret = writeI2C2byte(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0],INTERRUPT_VALUE , 2); 
   if (ret < 0 || ret == WRITE_FAILED)
   {
     return ESendFailed();
@@ -160,7 +160,7 @@ error_t setIntTime(int file, int time)
   }
   uint8_t READ_BUFF[MAX_BUFFER_SIZE]; 
   WRITE_BUFF[0] = REG_TIMING; 
-  error_t ret = readI2C2(file, DEVICE_ADDR, WRITE_BUFF[0], READ_BUFF);
+  error_t ret = readI2C2(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], READ_BUFF);
   if (ret < 0 || ret == READ_FAILED)
   {
     return ESendFailed();
@@ -171,7 +171,7 @@ error_t setIntTime(int file, int time)
 
  /* writing to the timing register*/
   WRITE_BUFF[0] = REG_TIMING; //command reg to write to control register   
-  ret = writeI2C2byte(file, DEVICE_ADDR, WRITE_BUFF[0], TIMING_VALUE, 2); 
+  ret = writeI2C2byte(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], TIMING_VALUE, 2); 
   if (ret < 0 || ret == WRITE_FAILED)
   {
     return ESendFailed();
@@ -188,7 +188,7 @@ error_t readReg(int file, uint8_t reg)
   {
     return ESendFailed(); 
   }
-  error_t ret = readI2C2(file, DEVICE_ADDR, reg, READ_BUFF); 
+  error_t ret = readI2C2(file, DEVICE_ADDR_LIGHT, reg, READ_BUFF); 
   if (ret < 0 || ret == READ_FAILED)
   {
     return ESendFailed();
@@ -209,7 +209,7 @@ error_t setIntrptControl(int file, int action)
   }
   uint8_t READ_BUFF[MAX_BUFFER_SIZE]; 
   WRITE_BUFF[0] = REG_INTERRUPT; 
-  error_t ret = readI2C2(file, DEVICE_ADDR, WRITE_BUFF[0], READ_BUFF);
+  error_t ret = readI2C2(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], READ_BUFF);
   if (ret < 0 || ret == READ_FAILED)
   {
     return ESendFailed();
@@ -218,7 +218,7 @@ error_t setIntrptControl(int file, int action)
   uint8_t intrregvalue = READ_BUFF[0]; 
   intrregvalue &= 0xCF; //zeros out field
   intrregvalue |= (action<<6); //sets value 
-  ret = writeI2C2byte(file, DEVICE_ADDR, WRITE_BUFF[0], intrregvalue, 2); 
+  ret = writeI2C2byte(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], intrregvalue, 2); 
   if (ret < 0 || ret == WRITE_FAILED)
   {
     return ESendFailed();
@@ -232,7 +232,7 @@ error_t setIntrptControl(int file, int action)
 error_t PowerUP(int file)
 {
   WRITE_BUFF[0] = REG_CONTROL; //command reg to write to control register    
-  error_t ret = writeI2C2byte(file, DEVICE_ADDR, WRITE_BUFF[0], POWER_UP, 2); 
+  error_t ret = writeI2C2byte(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], POWER_UP, 2); 
   if (ret < 0 || ret == WRITE_FAILED)
   {
     return ESendFailed();
@@ -244,7 +244,7 @@ error_t PowerUP(int file)
 error_t PowerDown(int file) 
 {
   WRITE_BUFF[0] = REG_CONTROL; //command reg to write to control register    
-  error_t ret = writeI2C2byte(file, DEVICE_ADDR, WRITE_BUFF[0], POWER_DOWN, 2); 
+  error_t ret = writeI2C2byte(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], POWER_DOWN, 2); 
   if (ret < 0 || ret == WRITE_FAILED)
   {
     return ESendFailed();
@@ -263,7 +263,7 @@ float readLux(int file)
 
 /*data 0 lower*/ 
   WRITE_BUFF[0] = REG_SENSOR0_LOWER; 
-  error_t ret = readI2C2(file, DEVICE_ADDR, WRITE_BUFF[0], READ_BUFF); 
+  error_t ret = readI2C2(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], READ_BUFF); 
   if (ret < 0 || ret == READ_FAILED)
   {
     return ESendFailed();
@@ -273,7 +273,7 @@ float readLux(int file)
 
   /*data 0 upper*/ 
  WRITE_BUFF[0] = REG_SENSOR0_UPPER; 
-   ret = readI2C2(file, DEVICE_ADDR, WRITE_BUFF[0], READ_BUFF); 
+   ret = readI2C2(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], READ_BUFF); 
   if (ret < 0 || ret == READ_FAILED)
   {
     return ESendFailed();
@@ -283,7 +283,7 @@ float readLux(int file)
 
   /*data 1 lower*/ 
  WRITE_BUFF[0] = REG_SENSOR1_LOWER; 
-  ret = readI2C2(file, DEVICE_ADDR, WRITE_BUFF[0], READ_BUFF); 
+  ret = readI2C2(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], READ_BUFF); 
   if (ret < 0 || ret == READ_FAILED)
   {
     return ESendFailed();
@@ -293,7 +293,7 @@ float readLux(int file)
 
   /*data 1 upper*/ 
  WRITE_BUFF[0] = REG_SENSOR1_UPPER; 
-  ret = readI2C2(file, DEVICE_ADDR, WRITE_BUFF[0], READ_BUFF); 
+  ret = readI2C2(file, DEVICE_ADDR_LIGHT, WRITE_BUFF[0], READ_BUFF); 
   if (ret < 0 || ret == READ_FAILED)
   {
     return ESendFailed();
