@@ -160,7 +160,6 @@ void *temperature_function()
       temp_tk.logged_level = SENSOR_DATA;
       temp_decision_tk.logged_level = SENSOR_DATA;
       float data = -10.01;
-      float data = ((float)rand())/100000000;
       strcpy(temp_tk.message_string,"TEMPERATURE IN CELSIUS");
       strcpy(temp_decision_tk.message_string,"TEMPERATURE IN CELSIUS");
       sprintf(temp_tk.message,"%f",data);
