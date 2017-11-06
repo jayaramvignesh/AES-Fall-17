@@ -159,6 +159,7 @@ void *temperature_function()
       temp_decision_tk.current_time = ctime(&a);
       temp_tk.logged_level = SENSOR_DATA;
       temp_decision_tk.logged_level = SENSOR_DATA;
+      float data = -10.01;
       float data = ((float)rand())/100000000;
       strcpy(temp_tk.message_string,"TEMPERATURE IN CELSIUS");
       strcpy(temp_decision_tk.message_string,"TEMPERATURE IN CELSIUS");
@@ -190,6 +191,12 @@ void *temperature_function()
       /*unlock the mutex and exit*/
       pthread_mutex_unlock(&temp_log_queue_mutex);
 
+      /*check for graceful exit*/
+      if(exit_flag == 1)
+      {
+        break;
+      }
+      
       pthread_mutex_lock(&decision_queue_mutex);
       
       /*send the message to the queue and check for success*/

@@ -157,6 +157,11 @@ void *light_function()
       /*unlock the mutex and exit*/
       pthread_mutex_unlock(&light_log_queue_mutex);
 
+      /*check for graceful exit*/
+      if(exit_flag == 1)
+      {
+        break;
+      }
 
       pthread_mutex_lock(&decision_queue_mutex);
       
