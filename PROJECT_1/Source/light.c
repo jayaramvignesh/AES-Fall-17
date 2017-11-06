@@ -192,6 +192,7 @@ void *light_function()
 
   }
 
+  close(file);
   /*kill thread*/
   printf("\nEXITTTTTTTTTTTT THREADDDDDDDDDDDDDD 2\n");
   pthread_exit(NULL);

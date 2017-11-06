@@ -227,6 +227,7 @@ void *temperature_function()
    
   }
 
+  close(file);
   /*kill thread*/
   printf("\nEXITTTTTTTTTTTT THREADDDDDDDDDDDDDD 1\n");
   pthread_exit(NULL);
