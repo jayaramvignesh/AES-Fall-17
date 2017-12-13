@@ -6,7 +6,7 @@
 *
 *   description:
 *
-*   -source file for timer
+*   -source(.c) file for timer
 *
 *   -set up timer for heartbeat (cond timed wait)
 *
