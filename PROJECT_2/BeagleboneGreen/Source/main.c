@@ -1,9 +1,10 @@
 #include "main.h"
 #include "sig.h"
 #include "timer.h"
-#include "socket_bbg.h"
+#include "uart_task.h"
 #include "logger.h"
 #include "decision.h"
+#include "bbg_uart.h"
 
 int main(int argc, char* argv[])
 {
@@ -16,24 +17,22 @@ int main(int argc, char* argv[])
   
   strcpy(path_name,path); 
   
-  port_number = atoi(argv[1]);
-
-  if(argc < 2)
+  if(argc < 1)
   {
     printf("\nERROR:NO ARGUMENTS PASSED.\n");
     exit(1);
 
   }
-  else if(argc == 4)
-  {
-    strcpy(file_name,argv[2]);
-    strcpy(path_name, argv[3]);
-  }
   else if(argc == 3)
   {
-    strcpy(file_name,argv[2]);
+    strcpy(file_name,argv[1]);
+    strcpy(path_name, argv[2]);
   }
-  else if(argc > 4)
+  else if(argc == 2)
+  {
+    strcpy(file_name,argv[1]);
+  }
+  else if(argc > 3)
   {
     printf("\nTOOOOOOO MANY ARGUMENTS PASSED\n");
   }
@@ -197,7 +196,8 @@ int main(int argc, char* argv[])
   {
     /*if successful creation, log it*/
     time_t a = time(NULL);
-    maintask.current_time = ctime(&a);
+    char *ptr = ctime(&a);
+    strcpy(maintask.current_time,ptr); 
     maintask.logged_level = INFO;
     maintask.task_ID = main_bbg_task;
     strcpy(maintask.message_string, "SOCKET TASK SPAWNED!!!!!!");
@@ -229,7 +229,8 @@ int main(int argc, char* argv[])
   {
     /*if successful creation, log it*/
     time_t a = time(NULL);
-    maintask.current_time = ctime(&a);
+    char *ptr = ctime(&a);
+    strcpy(maintask.current_time,ptr); 
     maintask.logged_level = INFO;
     maintask.task_ID = main_bbg_task;
     strcpy(maintask.message_string, "LOGGER TASK SPAWNED!!!!!!");
@@ -261,7 +262,8 @@ int main(int argc, char* argv[])
   {
     /*if successful creation, log it*/
     time_t a = time(NULL);
-    maintask.current_time = ctime(&a);
+    char *ptr = ctime(&a);
+    strcpy(maintask.current_time,ptr); 
     maintask.logged_level = INFO;
     maintask.task_ID = main_bbg_task;
     strcpy(maintask.message_string, "DECISION TASK SPAWNED!!!!!!");
@@ -287,7 +289,7 @@ int main(int argc, char* argv[])
   {
    
     /*setup heartneaet for every 2 seconds*/
-    ts = heartbeat_setup(2,4000000);
+    ts = heartbeat_setup(20,4000000);
         
     if(exit_flag == 1)
     {
@@ -311,7 +313,8 @@ int main(int argc, char* argv[])
         /*if thread 1 is stuck, log it and call signal handler for graceful exit*/
         printf("\nSOCKET THREAD STUCK!!!!!!!!!!!\n");
         time_t a = time(NULL);
-        maintask.current_time = ctime(&a);
+        char *ptr = ctime(&a);
+        strcpy(maintask.current_time,ptr); 
         maintask.logged_level = ERROR;
         maintask.task_ID = main_bbg_task;
         strcpy(maintask.message_string, "SOCKET THREAD  STUCK!!!! ABORTYING EVERYTHING");
@@ -357,7 +360,8 @@ int main(int argc, char* argv[])
         /*if thread 2 is stuck, log it and call signal handler for graceful exit*/
         printf("\nTHREAD DECISION STUCK!!!!!\n");
         time_t a = time(NULL);
-        maintask.current_time = ctime(&a);
+        char *ptr = ctime(&a);
+        strcpy(maintask.current_time,ptr); 
         maintask.logged_level = ERROR;
         maintask.task_ID = main_bbg_task;
         strcpy(maintask.message_string, "THREAD DECISION STUCK!!!! ABORTYING EVERYTHING");
@@ -402,8 +406,8 @@ int main(int argc, char* argv[])
         /*if thread 3 is stuck, log it and call signal handler for graceful exit*/
         printf("\nTHREAD Logger STUCK!!!!!!!!\n");
         time_t a = time(NULL);
-
-        maintask.current_time = ctime(&a);
+        char *ptr = ctime(&a);
+        strcpy(maintask.current_time,ptr); 
         maintask.logged_level = ERROR;
         maintask.task_ID = main_bbg_task;
         strcpy(maintask.message_string, "THREAD LOGGER STUCK!!!! ABORTYING EVERYTHING");

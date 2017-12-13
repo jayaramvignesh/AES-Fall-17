@@ -27,6 +27,10 @@
 
 #include "decision.h"
 
+
+#define ULTRASONIC_THRESHOLD 5
+#define ALCOHOL_THRESHOLD 0
+
 /*function for decision thread*/
 void *decision_function()
 {
@@ -46,8 +50,6 @@ void *decision_function()
     
     /*lock the mutex and wait for timer to fire*/
     pthread_mutex_lock(&socket_decision_queue_mutex);
-    
-    printf("\nInside thread decision\n");  
     
     /*get the attributes for the queue*/
     mq_getattr(socket_decision_mqdes1,&attr);
@@ -74,25 +76,31 @@ void *decision_function()
           if(receiver.logged_level == 1)
           {
             time_t a = time(NULL);
-            decisiontask.current_time = ctime(&a);
-            decisiontask.task_ID = decision_task;
-            decisiontask.logged_level = ALERT;
-            strcpy(decisiontask.message_string,"ALERT!!! ALERT!!! ALERT!!! ACCELEROMETER OUT OF CONTROL");
-            sprintf(decisiontask.message,"%f",12.20);
-            decisiontask.message_length = strlen(decisiontask.message);  
-           
-            /*lock the main queue mutex*/
-            pthread_mutex_lock(&decision_log_queue_mutex);
-    
-            /*send the message to the queue and check for success*/
-            if(mq_send(decision_log_mqdes1,(const char *)&decisiontask, sizeof(decisiontask),0) == -1)
+            char *ptr = ctime(&a);
+            float data= atof(receiver.message);
+            if(data < 0)
             {
-              printf("\nERROR: mqsend\n");
-              exit(1);
-            }
+              strcpy(decisiontask.current_time,ptr); 
+              decisiontask.task_ID = decision_task;
+              decisiontask.logged_level = ALERT;
+              strcpy(decisiontask.message_string,"ALERT!!! ALERT!!! ALERT!!! ACCELEROMETER OUT OF CONTROL");
+              strcpy(decisiontask.message,receiver.message);
+              decisiontask.message_length = strlen(decisiontask.message);  
+            
+              printf("\nALERT!! ALERT!! ALERT!! ACCELEROMETER OUT OF CONTROL\n");
+              /*lock the main queue mutex*/
+              pthread_mutex_lock(&decision_log_queue_mutex);
+    
+              /*send the message to the queue and check for success*/
+              if(mq_send(decision_log_mqdes1,(const char *)&decisiontask, sizeof(decisiontask),0) == -1)
+              {
+                printf("\nERROR: mqsend\n");
+                exit(1);
+              }
               
-            /*unlock the main queue mutex*/
-            pthread_mutex_unlock(&decision_log_queue_mutex);
+              /*unlock the main queue mutex*/
+              pthread_mutex_unlock(&decision_log_queue_mutex);
+            }
          }
         }
         else if(receiver.task_ID == alcohol_task)
@@ -101,82 +109,65 @@ void *decision_function()
           if(receiver.logged_level == 1)
           {
             time_t a = time(NULL);
-            decisiontask.current_time = ctime(&a);
+            char *ptr = ctime(&a);
+            strcpy(decisiontask.current_time,ptr); 
             decisiontask.task_ID = decision_task;
-            decisiontask.logged_level = ALERT;
-            strcpy(decisiontask.message_string,"ALERT!!! ALERT!!! ALERT!!! ALCOGOL DETECTED. HE IS DRUNKK!!!!");
-            sprintf(decisiontask.message,"%f",2.0);
-            decisiontask.message_length = strlen(decisiontask.message);  
-          
-            /*lock the main queue mutex*/
-            pthread_mutex_lock(&decision_log_queue_mutex);
-    
-            /*send the message to the queue and check for success*/
-            if(mq_send(decision_log_mqdes1,(const char *)&decisiontask, sizeof(decisiontask),0) == -1)
+            float data = atof(receiver.message);
+            if(data < ALCOHOL_THRESHOLD)
             {
-              printf("\nERROR: mqsend\n");
-              exit(1);
-            }
+              decisiontask.logged_level = ALERT;
+              strcpy(decisiontask.message_string,"ALERT!!! ALERT!!! ALERT!!! ALCOGOL DETECTED. HE IS DRUNKK!!!!");
+              strcpy(decisiontask.message,receiver.message);
+              decisiontask.message_length = strlen(decisiontask.message);  
+              printf("\nALERT!!! ALERT!!! ALERT!!! ALCOGOL DETECTED. HE IS DRUNKK!!!!\n");
+              /*lock the main queue mutex*/
+              pthread_mutex_lock(&decision_log_queue_mutex);
+    
+              /*send the message to the queue and check for success*/
+              if(mq_send(decision_log_mqdes1,(const char *)&decisiontask, sizeof(decisiontask),0) == -1)
+              {
+                printf("\nERROR: mqsend\n");
+                exit(1);
+              }
+            
               
-            /*unlock the main queue mutex*/
-            pthread_mutex_unlock(&decision_log_queue_mutex);
+              /*unlock the main queue mutex*/
+              pthread_mutex_unlock(&decision_log_queue_mutex);
+            }
          }
                  
-        }
-        else if(receiver.task_ID == CO_task)
-        {
-          /*check if logged level is SENSOR DATA*/
-          if(receiver.logged_level == 1)
-          {
-            time_t a = time(NULL);
-            decisiontask.current_time = ctime(&a);
-            decisiontask.task_ID = decision_task;
-            decisiontask.logged_level = ALERT;
-            strcpy(decisiontask.message_string,"ALERT!!! ALERT!!! ALERT!!! SMOKE DETECTED. FIRE FIRE FIRE!!!!");
-            sprintf(decisiontask.message,"%f",20.0);
-            decisiontask.message_length = strlen(decisiontask.message);  
-          
-          
-            /*lock the main queue mutex*/
-            pthread_mutex_lock(&decision_log_queue_mutex);
-    
-            /*send the message to the queue and check for success*/
-            if(mq_send(decision_log_mqdes1,(const char *)&decisiontask, sizeof(decisiontask),0) == -1)
-            {
-              printf("\nERROR: mqsend\n");
-              exit(1);
-            }
-              
-            /*unlock the main queue mutex*/
-            pthread_mutex_unlock(&decision_log_queue_mutex);
-         }
- 
-        }
+        } 
         else if(receiver.task_ID == ultrasonic_task)
         {
           /*check if logged level is SENSOR DATA*/
           if(receiver.logged_level == 1)
           {
             time_t a = time(NULL);
-            decisiontask.current_time = ctime(&a);
+            char *ptr = ctime(&a);
+            strcpy(decisiontask.current_time,ptr); 
             decisiontask.task_ID = decision_task;
-            decisiontask.logged_level = ALERT;
-            strcpy(decisiontask.message_string,"ALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!");
-            sprintf(decisiontask.message,"%f",22.2);
-            decisiontask.message_length = strlen(decisiontask.message);  
-          
-            /*lock the main queue mutex*/
-            pthread_mutex_lock(&decision_log_queue_mutex);
-    
-            /*send the message to the queue and check for success*/
-            if(mq_send(decision_log_mqdes1,(const char *)&decisiontask, sizeof(decisiontask),0) == -1)
+            float data  = atof(receiver.message);
+            if(data < ULTRASONIC_THRESHOLD)
             {
-              printf("\nERROR: mqsend\n");
-              exit(1);
-            }
+              decisiontask.logged_level = ALERT;
+              strcpy(decisiontask.message_string,"ALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!");
+              strcpy(decisiontask.message,receiver.message);
+              decisiontask.message_length = strlen(decisiontask.message);  
+              printf("\nALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!\n"); 
+              /*lock the main queue mutex*/
+              pthread_mutex_lock(&decision_log_queue_mutex);
+    
+              /*send the message to the queue and check for success*/
+              if(mq_send(decision_log_mqdes1,(const char *)&decisiontask, sizeof(decisiontask),0) == -1)
+              {
+                printf("\nERROR: mqsend\n");
+                exit(1);
+              }
              
-            /*unlock the main queue mutex*/
-            pthread_mutex_unlock(&decision_log_queue_mutex);
+              /*unlock the main queue mutex*/
+              pthread_mutex_unlock(&decision_log_queue_mutex);
+          
+            }
           }
         }        
       }
@@ -187,11 +178,11 @@ void *decision_function()
     
     /*unlock the mutex and exit*/
     pthread_mutex_unlock(&socket_decision_queue_mutex);
-    usleep(150000);
+    usleep(15000);
   }
   
   /*exit the thread*/
-  printf("\nEXITTTTTTTTTTTTT THREADDDDDDDDDDDDDD 4\n");
+  printf("\nEXITTTTTTTTTTTTT DECISION THREADDDDDDDDDDDDDD\n");
   pthread_exit(NULL);
 
 

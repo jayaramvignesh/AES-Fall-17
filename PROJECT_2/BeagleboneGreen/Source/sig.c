@@ -24,7 +24,8 @@
 void signal_handler()
 {
   time_t a = time(NULL);
-  maintask.current_time = ctime(&a);
+  char *ptr = ctime(&a);
+  strcpy(maintask.current_time,ptr); 
   maintask.logged_level = INFO;
   maintask.task_ID = main_bbg_task;
   strcpy(maintask.message_string,"EXIT GRACEFULLYYY!!!!!!!!!!!");
