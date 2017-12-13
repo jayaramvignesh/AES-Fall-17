@@ -29,11 +29,6 @@
 #include<netdb.h>
 #include <unistd.h>
 #include<mqueue.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdint.h>
-#include<string.h>
-#include<stdbool.h>
 #include<errno.h>
 #include<pthread.h>
 #include<fcntl.h>
@@ -42,6 +37,8 @@
 #include<time.h>
 #include<errno.h>
 #include<sys/time.h>
+#include <termios.h>
+#include <sys/stat.h>
 
 #define MSG_SIZE 4096
 #define NO_OF_MGS 10
@@ -94,13 +91,23 @@ typedef enum task_id
 /*message structure*/
 typedef struct message_log
 {
-  char* current_time;  
+  char current_time[26];  
   log_level logged_level;
   tid task_ID;
   char message_string[DATA_SIZE];
   char message[DATA_SIZE];
   uint8_t message_length;
 }m_log;
+
+
+typedef struct receive_uart_packet
+{
+  uint8_t log_id;
+  uint8_t log_level;
+  float data;
+  char timestamp[25];
+  char c;
+}uart_packet;
 
 
 
