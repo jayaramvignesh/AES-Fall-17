@@ -1,5 +1,5 @@
 /****************************************************************************
-*   Authors: Arundhath Swami and Vignesh Jayaram
+*   Authors: Arundhathi Swami and Vignesh Jayaram
 *   date edited: 13th Dec  2017
 *
 *   file: uart_task.c
@@ -117,8 +117,6 @@ void *socket_function()
     }
     
   
-    /*lock the main queue mutex*/
-    pthread_mutex_lock(&socket_log_queue_mutex);
    
     memset(&rec,'\0',sizeof(rec));
     
@@ -135,7 +133,6 @@ void *socket_function()
     else
     {
       receive.logged_level = rec.log_level;
-
       /*check the received log level*/
       if(receive.logged_level == SENSOR_DATA)
       {
@@ -164,8 +161,6 @@ void *socket_function()
         printf("\nERROR: mqsend\n");
       }
   
-      /*unlock the main queue mutex*/
-      pthread_mutex_unlock(&socket_log_queue_mutex);
   
       /*if received data is sensor data, then only add to decision queue*/
       if(receive.logged_level == SENSOR_DATA)

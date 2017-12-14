@@ -1,5 +1,5 @@
 /****************************************************************************
-*   Authors: Arundhath Swami and Vignesh Jayaram
+*   Authors: Arundhathi Swami and Vignesh Jayaram
 *   date edited: 13th Dec  2017
 *
 *   file: bbg_uart.c
@@ -18,24 +18,22 @@
 
 #include "bbg_uart.h"
 
-#define FLAGS O_RDWR | O_NOCTTY | O_SYNC
-char *device_name = "/dev/ttyO4";
-
-void tty_config(struct termios *config, int file_descriptor)
+char *device = "/dev/ttyO4";
+void tty_config(struct termios *con, int descriptor)
 {
-  tcgetattr(file_descriptor, config);
-  config->c_iflag &= ~(IGNBRK | BRKINT | ICRNL | INLCR | PARMRK | INPCK | ISTRIP | IXON);
-  config->c_oflag = 0;
-  config->c_lflag &= ~(ECHO | ECHONL | ICANON | IEXTEN | ISIG);
-  config->c_cc[VMIN] = 1;
-  config->c_cc[VTIME] = 0;
-  if(cfsetispeed(config, B57600) || cfsetospeed(config, B57600))
+  tcgetattr(descriptor, con);
+  con->c_iflag &= ~(IGNBRK | BRKINT | ICRNL | INLCR | PARMRK | INPCK | ISTRIP | IXON);
+  con->c_oflag = 0;
+  con->c_lflag &= ~(ECHO | ECHONL | ICANON | IEXTEN | ISIG);
+  con->c_cc[VMIN] = 1;
+  con->c_cc[VTIME] = 0;
+  if(cfsetispeed(con, B57600) || cfsetospeed(con, B57600))
   {
     perror("ERROR in baud set\n");
   }
 
 
-  if(tcsetattr(file_descriptor, TCSAFLUSH, config) < 0)
+  if(tcsetattr(descriptor, TCSAFLUSH, con) < 0)
   {
     perror("ERROR in set attr\n");
   }                                                 
@@ -44,7 +42,7 @@ void tty_config(struct termios *config, int file_descriptor)
 void uart_init(void)
 {
    
-  fd = open(device_name,FLAGS );
+  fd = open(device, O_RDWR | O_NOCTTY | O_SYNC);// | O_NDELAY);
   
   if(fd == -1)
   {
@@ -60,4 +58,31 @@ void uart_init(void)
   }
 }
 
+/*int main()
+{
+  uart_init();
+  
+ 
+  char read_value[200]; 
+  memset(read_value,'\0',sizeof(read_value));
+  printf("\nWaiting to receive\n");
+  int n=0;
 
+
+  while(1)
+  {
+    uart_packet rec;
+    printf("\nREADING AGAIN\n");
+    if((n=read(fd,&rec,sizeof(rec))) < 0)
+    {
+      printf("\nRead Fail\n");
+    }
+    printf("\nlog elvel %d\n",rec.log_level);
+    printf("\nlog id %d\n",rec.log_id);
+    printf("\nDATA %f\n",rec.data);
+    printf("\n%s\n",rec.timestamp);
+    memset(rec,'\0',sizeof(rec));
+  }
+  
+  close(fd);
+}*/

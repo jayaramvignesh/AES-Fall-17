@@ -1,12 +1,12 @@
 /****************************************************************************
-*   Authors: Arundhath Swami and Vignesh Jayaram
+*   Authors: Arundhathi Swami and Vignesh Jayaram
 *   date edited: 6th Dec 2017
 *
 *   file: timer.c
 *
 *   description:
 *
-*   -source(.c) file for timer
+*   -source file for timer
 *
 *   -set up timer for heartbeat (cond timed wait)
 *

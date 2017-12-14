@@ -1,5 +1,5 @@
 /*************************************************************************
-*   Authors: Arundhath Swami and Vignesh Jayaram
+*   Authors: Arundhathi Swami and Vignesh Jayaram
 *   date edited: 2nd Nov 2017
 *
 *   file: decision.c
@@ -26,10 +26,12 @@
 
 
 #include "decision.h"
+#include "BBG_LED.h"
+#include "ERROR_LIB.h"
 
-
+#define ACCELEROMETER_THRESHOLD 90.000000
 #define ULTRASONIC_THRESHOLD 5
-#define ALCOHOL_THRESHOLD 0
+#define ALCOHOL_THRESHOLD 60
 
 /*function for decision thread*/
 void *decision_function()
@@ -78,16 +80,16 @@ void *decision_function()
             time_t a = time(NULL);
             char *ptr = ctime(&a);
             float data= atof(receiver.message);
-            if(data < 0)
+            if(data == ACCELEROMETER_THRESHOLD)
             {
               strcpy(decisiontask.current_time,ptr); 
               decisiontask.task_ID = decision_task;
               decisiontask.logged_level = ALERT;
-              strcpy(decisiontask.message_string,"ALERT!!! ALERT!!! ALERT!!! ACCELEROMETER OUT OF CONTROL");
+              strcpy(decisiontask.message_string,"ALERT!!! ACCELEROMETER ACTIVE");
               strcpy(decisiontask.message,receiver.message);
               decisiontask.message_length = strlen(decisiontask.message);  
-            
-              printf("\nALERT!! ALERT!! ALERT!! ACCELEROMETER OUT OF CONTROL\n");
+              LEDOn(3); 
+              printf("\nALERT!! ACCELEROMETER ACTVE\n");
               /*lock the main queue mutex*/
               pthread_mutex_lock(&decision_log_queue_mutex);
     
@@ -101,6 +103,11 @@ void *decision_function()
               /*unlock the main queue mutex*/
               pthread_mutex_unlock(&decision_log_queue_mutex);
             }
+            else
+            {
+              LEDOff(3);
+            }
+
          }
         }
         else if(receiver.task_ID == alcohol_task)
@@ -113,16 +120,16 @@ void *decision_function()
             strcpy(decisiontask.current_time,ptr); 
             decisiontask.task_ID = decision_task;
             float data = atof(receiver.message);
-            if(data < ALCOHOL_THRESHOLD)
+            if(data > ALCOHOL_THRESHOLD)
             {
               decisiontask.logged_level = ALERT;
-              strcpy(decisiontask.message_string,"ALERT!!! ALERT!!! ALERT!!! ALCOGOL DETECTED. HE IS DRUNKK!!!!");
+              strcpy(decisiontask.message_string,"ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!");
               strcpy(decisiontask.message,receiver.message);
               decisiontask.message_length = strlen(decisiontask.message);  
-              printf("\nALERT!!! ALERT!!! ALERT!!! ALCOGOL DETECTED. HE IS DRUNKK!!!!\n");
+              printf("\nALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!\n");
               /*lock the main queue mutex*/
               pthread_mutex_lock(&decision_log_queue_mutex);
-    
+              LEDOn(1);
               /*send the message to the queue and check for success*/
               if(mq_send(decision_log_mqdes1,(const char *)&decisiontask, sizeof(decisiontask),0) == -1)
               {
@@ -133,6 +140,10 @@ void *decision_function()
               
               /*unlock the main queue mutex*/
               pthread_mutex_unlock(&decision_log_queue_mutex);
+            }
+            else
+            {
+              LEDOff(1);
             }
          }
                  
@@ -153,6 +164,7 @@ void *decision_function()
               strcpy(decisiontask.message_string,"ALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!");
               strcpy(decisiontask.message,receiver.message);
               decisiontask.message_length = strlen(decisiontask.message);  
+              LEDOn(2);
               printf("\nALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!\n"); 
               /*lock the main queue mutex*/
               pthread_mutex_lock(&decision_log_queue_mutex);
@@ -167,6 +179,10 @@ void *decision_function()
               /*unlock the main queue mutex*/
               pthread_mutex_unlock(&decision_log_queue_mutex);
           
+            }
+            else
+            {
+              LEDOff(2);
             }
           }
         }        

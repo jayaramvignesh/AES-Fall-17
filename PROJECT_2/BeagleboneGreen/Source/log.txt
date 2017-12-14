@@ -1,0 +1,764 @@
+
+MESSAGE NUMBER 1
+
+task:Main BBG
+message:SOCKET TASK SPAWNED!!!!!!
+data:-
+log_level:INFO
+timestamp:Thu Dec 14 11:05:42 2017
+
+
+MESSAGE NUMBER 2
+
+task:Main BBG
+message:LOGGER TASK SPAWNED!!!!!!
+data:-
+log_level:INFO
+timestamp:Thu Dec 14 11:05:42 2017
+
+
+MESSAGE NUMBER 3
+
+task:Main BBG
+message:DECISION TASK SPAWNED!!!!!!
+data:-
+log_level:INFO
+timestamp:Thu Dec 14 11:05:42 2017
+
+MESSAGE NUMBER 4
+
+task:Alcohol
+message:Data value of Alcohol
+data:59.971096
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:45 2017
+
+MESSAGE NUMBER 5
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:95.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:45 2017
+
+MESSAGE NUMBER 6
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:221.958755
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:45 2017
+
+MESSAGE NUMBER 7
+
+task:Alcohol
+message:Data value of Alcohol
+data:59.971096
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:47 2017
+
+MESSAGE NUMBER 8
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:95.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:47 2017
+
+MESSAGE NUMBER 9
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:22.268042
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:47 2017
+
+MESSAGE NUMBER 10
+
+task:Alcohol
+message:Data value of Alcohol
+data:59.466412
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:50 2017
+
+MESSAGE NUMBER 11
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:95.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:50 2017
+
+MESSAGE NUMBER 12
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:221.443298
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:50 2017
+
+MESSAGE NUMBER 13
+
+task:Alcohol
+message:Data value of Alcohol
+data:60.884655
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:52 2017
+
+MESSAGE NUMBER 14
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:60.884655
+log_level:ALERT
+timestamp:Thu Dec 14 11:05:54 2017
+
+MESSAGE NUMBER 15
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:95.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:52 2017
+
+MESSAGE NUMBER 16
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:4.639175
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:52 2017
+
+MESSAGE NUMBER 17
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!
+data:4.639175
+log_level:ALERT
+timestamp:Thu Dec 14 11:05:54 2017
+
+MESSAGE NUMBER 18
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:54 2017
+
+MESSAGE NUMBER 19
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:05:57 2017
+
+MESSAGE NUMBER 20
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:95.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:54 2017
+
+MESSAGE NUMBER 21
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:5.360825
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:54 2017
+
+MESSAGE NUMBER 22
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:56 2017
+
+MESSAGE NUMBER 23
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:05:59 2017
+
+MESSAGE NUMBER 24
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:90.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:56 2017
+
+MESSAGE NUMBER 25
+
+task:Logger task
+message:ALERT!!! ACCELEROMETER ACTIVE
+data:90.000000
+log_level:ALERT
+timestamp:Thu Dec 14 11:05:59 2017
+
+MESSAGE NUMBER 26
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:2.886598
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:56 2017
+
+MESSAGE NUMBER 27
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!
+data:2.886598
+log_level:ALERT
+timestamp:Thu Dec 14 11:05:59 2017
+
+MESSAGE NUMBER 28
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:58 2017
+
+MESSAGE NUMBER 29
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:01 2017
+
+MESSAGE NUMBER 30
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:95.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:58 2017
+
+MESSAGE NUMBER 31
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:2.577320
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:05:59 2017
+
+MESSAGE NUMBER 32
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!
+data:2.577320
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:01 2017
+
+MESSAGE NUMBER 33
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:01 2017
+
+MESSAGE NUMBER 34
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:03 2017
+
+MESSAGE NUMBER 35
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:95.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:01 2017
+
+MESSAGE NUMBER 36
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:1.546392
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:01 2017
+
+MESSAGE NUMBER 37
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!
+data:1.546392
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:03 2017
+
+MESSAGE NUMBER 38
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:03 2017
+
+MESSAGE NUMBER 39
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:06 2017
+
+MESSAGE NUMBER 40
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:95.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:03 2017
+
+MESSAGE NUMBER 41
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:16.597939
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:03 2017
+
+MESSAGE NUMBER 42
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:05 2017
+
+MESSAGE NUMBER 43
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:95.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:05 2017
+
+MESSAGE NUMBER 44
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:08 2017
+
+MESSAGE NUMBER 45
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:3.298969
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:05 2017
+
+MESSAGE NUMBER 46
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!
+data:3.298969
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:08 2017
+
+MESSAGE NUMBER 47
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:07 2017
+
+MESSAGE NUMBER 48
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:10 2017
+
+MESSAGE NUMBER 49
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:95.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:07 2017
+
+MESSAGE NUMBER 50
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:5.257732
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:08 2017
+
+MESSAGE NUMBER 51
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:10 2017
+
+MESSAGE NUMBER 52
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:12 2017
+
+MESSAGE NUMBER 53
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:95.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:10 2017
+
+MESSAGE NUMBER 54
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:4.329897
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:10 2017
+
+MESSAGE NUMBER 55
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!
+data:4.329897
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:12 2017
+
+MESSAGE NUMBER 56
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:12 2017
+
+MESSAGE NUMBER 57
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:95.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:12 2017
+
+MESSAGE NUMBER 58
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:15 2017
+
+MESSAGE NUMBER 59
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:2.886598
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:12 2017
+
+MESSAGE NUMBER 60
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!
+data:2.886598
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:15 2017
+
+MESSAGE NUMBER 61
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:14 2017
+
+MESSAGE NUMBER 62
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:17 2017
+
+MESSAGE NUMBER 63
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:95.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:14 2017
+
+MESSAGE NUMBER 64
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:2.783505
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:14 2017
+
+MESSAGE NUMBER 65
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!
+data:2.783505
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:17 2017
+
+MESSAGE NUMBER 66
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:16 2017
+
+MESSAGE NUMBER 67
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:19 2017
+
+MESSAGE NUMBER 68
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:90.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:16 2017
+
+MESSAGE NUMBER 69
+
+task:Logger task
+message:ALERT!!! ACCELEROMETER ACTIVE
+data:90.000000
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:19 2017
+
+MESSAGE NUMBER 70
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:223.505157
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:17 2017
+
+MESSAGE NUMBER 71
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:19 2017
+
+MESSAGE NUMBER 72
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:21 2017
+
+MESSAGE NUMBER 73
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:90.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:19 2017
+
+MESSAGE NUMBER 74
+
+task:Logger task
+message:ALERT!!! ACCELEROMETER ACTIVE
+data:90.000000
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:21 2017
+
+MESSAGE NUMBER 75
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:5.670103
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:19 2017
+
+MESSAGE NUMBER 76
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:21 2017
+
+MESSAGE NUMBER 77
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:23 2017
+
+MESSAGE NUMBER 78
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:90.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:21 2017
+
+MESSAGE NUMBER 79
+
+task:Logger task
+message:ALERT!!! ACCELEROMETER ACTIVE
+data:90.000000
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:23 2017
+
+MESSAGE NUMBER 80
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:5.979382
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:21 2017
+
+MESSAGE NUMBER 81
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:23 2017
+
+MESSAGE NUMBER 82
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:26 2017
+
+MESSAGE NUMBER 83
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:90.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:23 2017
+
+MESSAGE NUMBER 84
+
+task:Logger task
+message:ALERT!!! ACCELEROMETER ACTIVE
+data:90.000000
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:26 2017
+
+MESSAGE NUMBER 85
+
+task:Ultrasonic sensor
+message:Data value of Ultrasonic sensor
+data:4.226804
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:23 2017
+
+MESSAGE NUMBER 86
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! COLLISION MAY TAKE PLACE.. STOP STOP!!!!
+data:4.226804
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:26 2017
+
+MESSAGE NUMBER 87
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:25 2017
+
+MESSAGE NUMBER 88
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:28 2017
+
+MESSAGE NUMBER 89
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:90.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:25 2017
+
+MESSAGE NUMBER 90
+
+task:Logger task
+message:ALERT!!! ACCELEROMETER ACTIVE
+data:90.000000
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:28 2017
+
+MESSAGE NUMBER 91
+
+task:Alcohol
+message:Data value of Alcohol
+data:99.155899
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:27 2017
+
+MESSAGE NUMBER 92
+
+task:Logger task
+message:ALERT!!! ALERT!!! ALERT!!! ALCOHOL DETECTED. HE IS DRUNKK!!!!
+data:99.155899
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:30 2017
+
+MESSAGE NUMBER 93
+
+task:Accelerometer
+message:Data value of Accelerometer
+data:90.000000
+log_level:SENSOR_DATA
+timestamp:Thu Dec 14 05:06:28 2017
+
+MESSAGE NUMBER 94
+
+task:Logger task
+message:ALERT!!! ACCELEROMETER ACTIVE
+data:90.000000
+log_level:ALERT
+timestamp:Thu Dec 14 11:06:30 2017
+
+
+MESSAGE NUMBER 95
+
+task:Main BBG
+message:EXIT GRACEFULLYYY!!!!!!!!!!!
+data: - 
+log_level:INFO
+timestamp:Thu Dec 14 11:06:32 2017
+

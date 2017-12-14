@@ -1,3 +1,19 @@
+/****************************************************************************
+*   Authors: Arundhathi Swami and Vignesh Jayaram
+*   date edited: 14th Dec 2017
+*
+*   file: main.c
+*
+*   description:
+*   main source file
+*   - creates threads
+*   - handles heartbeats
+*   - destroys mutex and other variables on exit
+*
+*****************************************************************************/
+
+
+#include "BBG_LED.h"
 #include "main.h"
 #include "sig.h"
 #include "timer.h"
@@ -49,6 +65,10 @@ int main(int argc, char* argv[])
   pi = getpid();
   printf("PIDD is %d\n",pi);
 
+  LEDOff(0);
+  LEDOff(1);
+  LEDOff(2);
+  LEDOff(3);
   /*if file already exists, remove it*/
   remove(file_name);
   
@@ -306,7 +326,7 @@ int main(int argc, char* argv[])
       /*check the return value*/
       if(return_value == 0)
       {
-        printf("\nThread SOCKET is working\n");
+//        printf("\nThread SOCKET is working\n");
       }
       else
       {
@@ -352,7 +372,7 @@ int main(int argc, char* argv[])
       /*check the return value*/
       if(return_value == 0)
       {
-        printf("\nThread DECISION is working\n");
+    //    printf("\nThread DECISION is working\n");
       }
       else
       {
@@ -399,7 +419,7 @@ int main(int argc, char* argv[])
       /*check the return value*/
       if(return_value == 0)
       {
-          printf("\nThread logger is working\n");;
+      //    printf("\nThread logger is working\n");;
       }      
       else
       {

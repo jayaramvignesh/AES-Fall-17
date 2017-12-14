@@ -1,5 +1,5 @@
 /****************************************************************************
-*   Authors: Arundhath Swami and Vignesh Jayaram
+*   Authors: Arundhathi Swami and Vignesh Jayaram
 *   date edited: 6th Dec 2017
 *
 *   file: logger.c
@@ -106,7 +106,6 @@ void *logger_function()
 {
   static int Msg_no;
   int ret_value = 0;
-  printf("\nI am here : Logger Task\n");
   while(1)
   {  
     /*send condition signal to main indicating alive*/
