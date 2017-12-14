@@ -1,6 +1,6 @@
 /*************************************************************************
-*   Authors: Arundhath Swami and Vignesh Jayaram
-*   date edited: 6th Dec 2017
+*   Authors: Arundhathi Swami and Vignesh Jayaram
+*   date edited: 14th Dec 2017
 *
 *   file: uart_task.h
 *

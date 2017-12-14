@@ -1,5 +1,5 @@
 /*************************************************************************
-*   Authors: Arundhath Swami and Vignesh Jayaram
+*   Authors: Arundhathi Swami and Vignesh Jayaram
 *   date edited: 6th Dec 2017
 *
 *   file: decision.h
