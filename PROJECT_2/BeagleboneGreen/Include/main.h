@@ -70,7 +70,8 @@ typedef enum logger_level
     SENSOR_DATA = 1,
     ERROR = 2,
     INFO = 3,
-    ALERT = 4
+    ALERT = 4,
+    HB_FAIL = 5
 }log_level;
 
 /*enum for task id*/
@@ -151,5 +152,6 @@ pthread_cond_t main_thread3_cond;
 struct mq_attr attr;
 mqd_t socket_log_mqdes1, socket_decision_mqdes1, main_log_mqdes1, decision_log_mqdes1;
 
+void char_driver_userspace_call();
 
 #endif
