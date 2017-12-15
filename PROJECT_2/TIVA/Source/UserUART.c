@@ -61,7 +61,10 @@ void UARTSend(const uint8_t *pui8Buffer, uint32_t ui32Count)
 {
     while(ui32Count--)
     {
-        UARTprintf("\r\n%d",ui32Count);
+        //UARTprintf("\r\n%d",ui32Count);
+        UARTprintf("");
+        int i = 0;
+        for(i = 0; i< 1000; i++);
         ROM_UARTCharPutNonBlocking(UART7_BASE, *pui8Buffer++);
     }
 }

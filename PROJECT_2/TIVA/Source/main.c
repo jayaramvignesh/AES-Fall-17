@@ -22,18 +22,17 @@
  *                      - Echo - 1KOhm - PL3
  */
 
-
+//std libraries
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+
+// TivaWare includes
 #include "main.h"
 #include "drivers/pinout.h"
 #include "utils/uartstdio.h"
-
-
-// TivaWare includes
 #include "driverlib/sysctl.h"
 #include "driverlib/debug.h"
 #include "driverlib/rom.h"
@@ -74,17 +73,17 @@
 uint8_t exit_notif = 0;
 
 //global variable declaration
+//uss sensor
 int long rawdistance[1];
 uint32_t distancecounter = 0;
-
 char dist[8];
+//adxl sensor
 uint8_t adxlvalues[10] = {0};
 int x = 0, y = 0, z = 0;
 double xg = 0, yg = 0, zg = 0;
 #define ACTIVITY 90.0
 #define INACTIVITY 95.0
-
-
+//mq3-als sensor
 float cleangasconstant = 0;
 uint32_t alcraw[1];
 float alcvoltvalue = 0.0;
@@ -118,22 +117,17 @@ xSemaphoreHandle uss_tick=0;
 xSemaphoreHandle uart_tick=0;
 
 /*Task notify API initializations*/
-static TaskHandle_t xTaskLEDS = NULL, xTaskUSS = NULL, xTaskALS = NULL, xTaskADXL = NULL, xTaskUART = NULL;
+static TaskHandle_t xTaskLEDS = NULL, xTaskUSS = NULL, xTaskALS = NULL, xTaskADXL = NULL;
 
 
-
-void vTimerCallBack(void* a){
-    /*Signal ADXL TASK*/
+/*used to schedule each of the tasks at an interval of 2s within timer callback*/
+void vTimerCallBack(void* a)
+{
     xTaskNotifyGive( xTaskALS);
     xTaskNotifyGive( xTaskADXL);
     xTaskNotifyGive( xTaskUSS);
- //   xTaskNotifyGive( xTaskUART);
     xTaskNotifyGive( xTaskLEDS);
 }
-
-
-
-
 
 // Main function
 int main(void)
@@ -162,12 +156,12 @@ int main(void)
     /*initialise accelerometer*/
     ADXLSInit();
 
-    /*Set up adc 0 channel 3 - pin e-3*/
+    /*initialise and caliberate alcohol sensor*/
     cleangasconstant = calibrateALS();
     char cac[10];
     sprintf(cac, "%f", cleangasconstant);
     UARTprintf("Clean Air Ratio in Main: %s\n\n\n\n", cac);
-    //COSADCInit();
+
 
     SysCtlDelay(120000); //Delay by 10us
 
@@ -199,56 +193,101 @@ int main(void)
                     configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY, &xTaskUSS);
 
     xTaskCreate(UARTSendTask, (const portCHAR *)"UARTtoBBG",
-                    configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY, &xTaskUART);
+                    configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY, NULL);
 
     xTaskCreate(demoLEDTask, (const portCHAR *)"LEDs",
                 configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY, &xTaskLEDS);
 
     //initialize timer for 2 secs
-        xTimer = xTimerCreate("SyncTimer",2000,pdTRUE,(void*)0,vTimerCallBack);
-        if(xTimer==NULL)
+    xTimer = xTimerCreate("SyncTimer",2000,pdTRUE,(void*)0,vTimerCallBack);
+    if(xTimer==NULL)
+    {
+        UARTprintf("\r\nERROR: Timer Creation Failed\r\n");
+    }
+    else
+    {
+        if(xTimerStart(xTimer,0)!=pdPASS)
         {
-           UARTprintf("\r\nERROR: Timer Creation Failed\r\n");
+            UARTprintf("\r\nERROR: Timer Start Failed\r\n");
         }
-        else
-        {
-           if(xTimerStart(xTimer,0)!=pdPASS)
-           {
-               UARTprintf("\r\nERROR: Timer Start Failed\r\n");
-           }
-        }
+    }
 
-        vTaskStartScheduler();
+    /*begin scheduler*/
+    vTaskStartScheduler();
     return 0;
 }
 
+
+/* task that takes account of heartbeats from each task as soon as they are scheduled. Kills all tasks as soon as one task fails
+ * send a heartbeat to this task in time. ALso informs the BBG that a task on this end has ceased to function and the logging can stop
+ */
 void HBTickTask(void *pvParameters)
 {
-    UARTprintf("\r\nHeartBeat monitoring Started\n");
+    send_pkt hbpkt;//packet that sends the task which stopped
+    UARTprintf("\r\nPROGRESS: HeartBeat monitoring Started\n");
     for ( ; ; )
     {
         /*wait for jeartbeat from als Task*/
-        if(xSemaphoreTake(als_tick,15000) != pdPASS)
+        if(xSemaphoreTake(als_tick,3500) != pdPASS)
         {
-            UARTprintf("\r\nHeartbeat for alcohol sensor task failed\r\n");
+            memset(&hbpkt,0,sizeof(hbpkt));
+            hbpkt.log_id = alcohol_task;
+            hbpkt.log_level = HB_FAIL;
+            hbpkt.c = '\0';
+            hbpkt.data = 0.0;
+            time_t t = time(NULL);
+            char* times = ctime(&t);
+            strcpy(hbpkt.timestamp, times);
+            UARTprintf("\r\nERROR: ---------------------HEARTBEAT FOR ALCOHOL SENSOR TASK FAILED\r\n");
             exit_notif=1;
+            vTaskDelay(1000);
+            UARTSend((uint8_t *)&hbpkt, sizeof(hbpkt));
         }
 
-        if(xSemaphoreTake(adxl_tick,15000) != pdPASS)
+        if(xSemaphoreTake(adxl_tick,3500) != pdPASS)
         {
-            UARTprintf("\r\nHeartbeat for accelerometer task failed\r\n");
+            memset(&hbpkt,0,sizeof(hbpkt));
+            hbpkt.log_id = accelerometer_task;
+            hbpkt.log_level = HB_FAIL;
+            hbpkt.c = '\0';
+            hbpkt.data = 0.0;
+            time_t t = time(NULL);
+            char* times = ctime(&t);
+            strcpy(hbpkt.timestamp, times);
+            UARTprintf("\r\nERROR: ---------------------HEARTBEAT FOR ACCELEROMETER TASK FAILED\r\n");
             exit_notif=1;
+            vTaskDelay(1000);
+            UARTSend((uint8_t *)&hbpkt, sizeof(hbpkt));
         }
 
-        if(xSemaphoreTake(uss_tick,15000)!=pdPASS)
+        if(xSemaphoreTake(uss_tick,3500)!=pdPASS)
         {
-            UARTprintf("\r\nHeartbeat for Ultrasonic Sensor task failed\r\n");
+            memset(&hbpkt,0,sizeof(hbpkt));
+            hbpkt.log_id = ultrasonic_task;
+            hbpkt.log_level = HB_FAIL;
+            hbpkt.c = '\0';
+            hbpkt.data = 0.0;
+            time_t t = time(NULL);
+            char* times = ctime(&t);
+            strcpy(hbpkt.timestamp, times);
+            UARTprintf("\r\nERROR: ---------------------HEARTBEAT FOR ULTRASONIC SENSOR TASK FAILED\r\n");
             exit_notif=1;
+            vTaskDelay(1000);
+            UARTSend((uint8_t *)&hbpkt, sizeof(hbpkt));
         }
 
-        if(xSemaphoreTake(uart_tick,15000)!=pdPASS)
+        if(xSemaphoreTake(uart_tick,3500)!=pdPASS)
         {
-            UARTprintf("\r\nHeartbeat for Uart Sending task failed\r\n");
+            memset(&hbpkt,0,sizeof(hbpkt));
+            hbpkt.log_id = uart_task;
+            hbpkt.log_level = HB_FAIL;
+            hbpkt.c = '\0';
+            hbpkt.data = 0.0;
+            time_t t = time(NULL);
+            char* times = ctime(&t);
+            strcpy(hbpkt.timestamp, times);
+            UARTSend((uint8_t *)&hbpkt, sizeof(hbpkt));
+            UARTprintf("\r\nERROR: ---------------------HEARTBEAT FOR UART SENDER TASK FAILED\r\n");
             exit_notif=1;
         }
 
@@ -260,7 +299,7 @@ void HBTickTask(void *pvParameters)
     }
 }
 
-
+/*Task that monitors the alcohol sensor to detect intoxication levels*/
 void ALSTask(void *pvParameters)
 {
     send_pkt alspkt;
@@ -306,12 +345,12 @@ void ALSTask(void *pvParameters)
 
                 /* Send the message to the queue, waiting for 10 ticks for space to become available if the queue is already full. */
 
-                       alspkt.log_id = 4;
-                        alspkt.log_level = 1;
-                        alspkt.c = '\0';
-                        time_t t = time(NULL);
-                        char* times = ctime(&t);
-                        strcpy(alspkt.timestamp, times);
+                alspkt.log_id = 4;
+                alspkt.log_level = 1;
+                alspkt.c = '\0';
+                time_t t = time(NULL);
+                char* times = ctime(&t);
+                strcpy(alspkt.timestamp, times);
                 if( xQueueSendToBack( send_queue, &alspkt, 10 ) != pdPASS )
                 {
                     UARTprintf("\r\nERROR: Queue is full\r\n");
@@ -329,13 +368,11 @@ void ALSTask(void *pvParameters)
             }//mutex
             /*release queue mutex*/
             xSemaphoreGive(queue_mutex);
-
-
         }//semaphore
     }//for loop
 }//function loop
 
-//accelerometer values read from sensor
+/*accelerometer task to read values from the adxl sensor*/
 void ADXLTask(void *pvParameters)
 {
     uint8_t intsrc;
@@ -343,8 +380,6 @@ void ADXLTask(void *pvParameters)
     send_pkt adxlpkt;
     for( ; ;)
     {
-
-
         /*Send heartbeat notif to the heartbeat task*/
         xSemaphoreGive(adxl_tick);
 
@@ -382,12 +417,12 @@ void ADXLTask(void *pvParameters)
                     movement = ACTIVITY;
                 }
                 memset(&adxlpkt, 0, sizeof(send_pkt));
-                        adxlpkt.log_id = 3;
-                        adxlpkt.log_level = 1;
-                        adxlpkt.c = '\0';
-                        time_t t = time(NULL);
-                        char* times = ctime(&t);
-                        strcpy(adxlpkt.timestamp, times);
+                adxlpkt.log_id = 3;
+                adxlpkt.log_level = 1;
+                adxlpkt.c = '\0';
+                time_t t = time(NULL);
+                char* times = ctime(&t);
+                strcpy(adxlpkt.timestamp, times);
                 adxlpkt.data = movement;
                 /* Send the message to the queue, waiting for 10 ticks for space to become available if the queue is already full. */
                 if( xQueueSendToBack( send_queue, &adxlpkt, 10 ) != pdPASS )
@@ -406,14 +441,14 @@ void ADXLTask(void *pvParameters)
 #endif
         //vTaskDelay(1000);
                 /*release queue mutex*/
-                xSemaphoreGive(queue_mutex);
+            xSemaphoreGive(queue_mutex);
             }//queue mutex
         }//notif
     }//for
 }//function
 
 
-//get readings from Ultrasonic Sensor
+/* Task to get readings from Ultrasonic Sensor*/
 void USSTask(void *pvParameters)
 {
     /*code to trigger input for 10us and read echo output*/
@@ -459,19 +494,18 @@ void USSTask(void *pvParameters)
                    distancecounter++;
                    SysCtlDelay(120); //Delay by 1us
 
-                  // delayUs(1); //1usDelay
                 }
 
                 /*convert*/
                 distance = ((float)distancecounter/(float)58.2);
                 distance = distance *6;
                 memset(&usspkt, 0, sizeof(send_pkt));
-                        usspkt.log_id = 6;
-                        usspkt.log_level = 1;
-                        usspkt.c = '\0';
-                        time_t t = time(NULL);
-                        char* times = ctime(&t);
-                        strcpy(usspkt.timestamp, times);
+                usspkt.log_id = 6;
+                usspkt.log_level = 1;
+                usspkt.c = '\0';
+                time_t t = time(NULL);
+                char* times = ctime(&t);
+                strcpy(usspkt.timestamp, times);
                 usspkt.data = distance;
                 /* Send the message to the queue, waiting for 10 ticks for space to become available if the queue is already full. */
                 if( xQueueSendToBack( send_queue, &usspkt, 10 ) != pdPASS )
@@ -480,9 +514,6 @@ void USSTask(void *pvParameters)
                 }
 
                 sprintf(dist, "%f", distance);
-//                UARTSend((uint8_t *)&usspkt, sizeof(usspkt));
-//                uint32_t i = 0;
-//                for (i = 0; i<10000; i++);
                 /*print the distance in cms*/
                 UARTprintf("distance = %s cm\n", dist);
 
@@ -493,6 +524,7 @@ void USSTask(void *pvParameters)
     }
 }
 
+/*task to read values from the ultrasonic sensor*/
 void UARTSendTask(void *pvParameters)
 {
     uart_init();
@@ -501,52 +533,42 @@ void UARTSendTask(void *pvParameters)
     {
         /*Send heartbeat notif to the heartbeat task*/
         xSemaphoreGive(uart_tick);
-        //UARTprintf("\r\nIn receive task to receive data\r\n");
-        /* Block to wait on LEDs Task */
-      //  if(ulTaskNotifyTake( pdTRUE, portMAX_DELAY ))
-       // {
+        while(uxQueueSpacesAvailable(send_queue) != QUEUE_LENGTH)
+        {
+           if(xSemaphoreTake(queue_mutex,portMAX_DELAY))
+           {
+             //UARTprintf("\r\nIn receive task to receive data\r\n");
+             memset((void*)&recpkt, 0, sizeof(send_pkt));
+             if( xQueueReceive( send_queue, &recpkt, portMAX_DELAY ) != pdPASS )
+             {
+                 UARTprintf("\r\ERROR:Queue Receive\r\n");
+             }
+             else
+             {
+                 uint32_t i = 0;
+                 char tp[10];
+                 UARTprintf("\n/*-------------------------*/\n");
+                 UARTprintf("Log ID: %d\n",recpkt.log_id);
+                 UARTprintf("Log LEVEL: %d\n",recpkt.log_level);
+                 UARTprintf("TIMESTAMP: %s, %d\n",recpkt.timestamp, strlen(recpkt.timestamp));
+                 sprintf(tp, "%f", recpkt.data );
+                 UARTprintf("DATA: %s\n", tp);
+                 UARTprintf("/*-------------------------*/\n");
 
-            while(uxQueueSpacesAvailable(send_queue) != QUEUE_LENGTH)
+                 UARTSend((uint8_t *)&recpkt, sizeof(recpkt));
+                 for (i = 0; i<10000; i++);
 
-            {
-                if(xSemaphoreTake(queue_mutex,portMAX_DELAY))
-                {
-                    //UARTprintf("\r\nIn receive task to receive data\r\n");
-                    memset((void*)&recpkt, 0, sizeof(send_pkt));
-                    if( xQueueReceive( send_queue, &recpkt, portMAX_DELAY ) != pdPASS )
-                    {
-                        UARTprintf("\r\ERROR:Queue Receive\r\n");
-                    }
-                    else
-                    {
-                        uint32_t i = 0;
-                        char tp[10];
-                        UARTprintf("\n/*-------------------------*/\n");
-                        UARTprintf("Log ID: %d\n",recpkt.log_id);
-                        UARTprintf("Log LEVEL: %d\n",recpkt.log_level);
-                        UARTprintf("TIMESTAMP: %s, %d\n",recpkt.timestamp, strlen(recpkt.timestamp));
-                        sprintf(tp, "%f", recpkt.data );
-                        UARTprintf("DATA: %s\n", tp);
-                        UARTprintf("/*-------------------------*/\n");
+             }
 
-                       UARTSend((uint8_t *)&recpkt, sizeof(recpkt));
-                       for (i = 0; i<10000; i++);
-
-                    }
-
-                }//mutex
-                xSemaphoreGive(queue_mutex);
-            }//while
-
-            /*check if exit flag is set*/
-            if(exit_notif == 1)
-            {
-                vTaskDelete(NULL);
-            }
-       // }
-
+           }//mutex
+           xSemaphoreGive(queue_mutex);
+        }//while
+        /*check if exit flag is set*/
+        if(exit_notif == 1)
+        {
+            vTaskDelete(NULL);
+        }
     }
-
 }
 
 //#ifdef DEBUG

@@ -23,7 +23,8 @@ typedef enum logger_level
     SENSOR_DATA = 1,
     ERROR = 2,
     INFO = 3,
-    ALERT = 4
+    ALERT = 4,
+    HB_FAIL = 5
 }log_level;
 
 /*enum for task id*/
