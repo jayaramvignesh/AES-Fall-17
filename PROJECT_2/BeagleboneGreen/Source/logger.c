@@ -49,6 +49,10 @@ void logger_id_decode(char logger_level_string[], m_log receiver)
   {
     strcpy(logger_level_string, "ALERT");
   }
+  else if(receiver.logged_level == 5)
+  {
+    strcpy(logger_level_string, "TIVA_HEARTBEAT_FAIL");
+  }
            
 
 }

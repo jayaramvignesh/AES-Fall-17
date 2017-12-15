@@ -31,7 +31,7 @@
 
 #define ACCELEROMETER_THRESHOLD 90.000000
 #define ULTRASONIC_THRESHOLD 5
-#define ALCOHOL_THRESHOLD 60
+#define ALCOHOL_THRESHOLD 75
 
 /*function for decision thread*/
 void *decision_function()

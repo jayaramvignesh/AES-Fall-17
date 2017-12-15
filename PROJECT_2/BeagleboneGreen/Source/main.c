@@ -22,6 +22,35 @@
 #include "decision.h"
 #include "bbg_uart.h"
 
+/*function to call the char driver to set the leds*/
+void char_driver_userspace_call()
+{
+  int fd = 0;
+  int ret_value = 0;
+
+  /*open the char driver*/
+  fd = open("/dev/chardriver", O_RDWR);
+  if(fd < 0)
+  {
+    printf("\nERROR: FAILED TO OPEN CHAR DEVICE\n");
+    return;
+  }
+  
+  /*send fail to kernel module*/
+  char failsend[] = "fail";
+  ret_value = write(fd,failsend,strlen(failsend));
+  if(ret_value < 0)
+  {
+    printf("\nERROR: FAILED TO WRITE MESSAGE TO DEVICE\n");
+    return ;
+  }
+
+  printf("\n--------CHAR DRIVER COMMAND SENT------\n");
+  
+  /*close the character driver*/
+  close(fd);
+}
+
 int main(int argc, char* argv[])
 {
   char buffer[MSG_SIZE];
@@ -32,27 +61,6 @@ int main(int argc, char* argv[])
   char *path = getenv("PWD");
   
   strcpy(path_name,path); 
-  
-  if(argc < 1)
-  {
-    printf("\nERROR:NO ARGUMENTS PASSED.\n");
-    exit(1);
-
-  }
-  else if(argc == 3)
-  {
-    strcpy(file_name,argv[1]);
-    strcpy(path_name, argv[2]);
-  }
-  else if(argc == 2)
-  {
-    strcpy(file_name,argv[1]);
-  }
-  else if(argc > 3)
-  {
-    printf("\nTOOOOOOO MANY ARGUMENTS PASSED\n");
-  }
-
   strcat(path_name,"/");
   strcat(final_file,path_name);
   strcat(final_file,file_name);
@@ -65,10 +73,12 @@ int main(int argc, char* argv[])
   pi = getpid();
   printf("PIDD is %d\n",pi);
 
+  /*turn off all the leds*/
   LEDOff(0);
   LEDOff(1);
   LEDOff(2);
   LEDOff(3);
+
   /*if file already exists, remove it*/
   remove(file_name);
   
@@ -309,7 +319,7 @@ int main(int argc, char* argv[])
   {
    
     /*setup heartneaet for every 2 seconds*/
-    ts = heartbeat_setup(20,4000000);
+    ts = heartbeat_setup(10,4000000);
         
     if(exit_flag == 1)
     {
@@ -326,7 +336,7 @@ int main(int argc, char* argv[])
       /*check the return value*/
       if(return_value == 0)
       {
-//        printf("\nThread SOCKET is working\n");
+      
       }
       else
       {
@@ -349,12 +359,24 @@ int main(int argc, char* argv[])
         {
           printf("\nERROR: mqsend\n");
         }
-        
+      
         /*unlock the main queue mutex*/
-        pthread_mutex_unlock(&main_log_queue_mutex);
- 
+        pthread_mutex_unlock(&main_log_queue_mutex);  
+     
+        /*call char driver function to set LEDS notifying heartbeat fail*/
+        char_driver_userspace_call();       
+
+        printf("\nEXIT GRACEFULY !!!!\n");
+        
+        usleep(10000);
+
+        printf("\nALL CHILDREN ARE DEAD !!!!\n");
+        
+        exit(1);
+        
         /*call signal handler for graceful exit*/ 
         signal_handler();
+
         continue;
       }
      
@@ -372,7 +394,7 @@ int main(int argc, char* argv[])
       /*check the return value*/
       if(return_value == 0)
       {
-    //    printf("\nThread DECISION is working\n");
+      
       }
       else
       {
@@ -387,6 +409,9 @@ int main(int argc, char* argv[])
         strcpy(maintask.message_string, "THREAD DECISION STUCK!!!! ABORTYING EVERYTHING");
         strcpy(maintask.message, " -");
         maintask.message_length = strlen(maintask.message); 
+
+        /*call char driver function to set LEDS notifying heartbeat fail*/
+        char_driver_userspace_call();       
        
         /*lock the main queue mutex*/
         pthread_mutex_lock(&main_log_queue_mutex);
@@ -433,6 +458,9 @@ int main(int argc, char* argv[])
         strcpy(maintask.message_string, "THREAD LOGGER STUCK!!!! ABORTYING EVERYTHING");
         strcpy(maintask.message, " -");
         maintask.message_length = strlen(maintask.message); 
+        
+        /*call char driver function to set LEDS notifying heartbeat fail*/
+        char_driver_userspace_call();       
         
         /*lock the main queue mutex*/
         pthread_mutex_lock(&main_log_queue_mutex);

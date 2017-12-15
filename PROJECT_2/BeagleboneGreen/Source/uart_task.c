@@ -151,9 +151,42 @@ void *socket_function()
       char temp[20] = {};
       log_task_name(temp,rec);
       strcat(receive.message_string,temp);
+      printf("\n\n------------------------------------------\n");
+     
+      /*check for heartbeat fail of TIVA*/
+      if(receive.logged_level == 5)
+      {
+        printf("\nTIVA SIDE HEARTBEAT FAIL!! ABORT EVERYTHING\n");
+        
+        /*call the char driver to turn on all the four leds*/
+        char_driver_userspace_call();
+        
+        /*send the message to the queue and check for success*/
+        if(mq_send(socket_log_mqdes1,(const char *)&receive, sizeof(receive),0) == -1)
+        {
+          printf("\nERROR: mqsend\n");
+        }
+
+        /*send the message to the queue and check for success*/
+        if(mq_send(socket_decision_mqdes1,(const char *)&receive, sizeof(receive),0) == -1)
+        {
+          printf("\nERROR: mqsend\n");
+        }
+ 
+        /*send the message to the main queue and check for success*/
+        if(mq_send(main_log_mqdes1,(const char *)&receive, sizeof(receive),0) == -1)
+        {
+          printf("\nERROR: mqsend\n");
+        }
+ 
+        /*call signal handler to exit gracefully*/
+        signal_handler();
+      }
+
       printf("\n%s\n",receive.message_string);
       printf("\ndata is %s\n",receive.message);
       printf("\nReceived Time Stamp is %s\n",receive.current_time);
+      printf("------------------------------------------\n");
       
       /*send the message to the queue and check for success*/
       if(mq_send(socket_log_mqdes1,(const char *)&receive, sizeof(receive),0) == -1)
